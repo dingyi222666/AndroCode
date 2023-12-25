@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
+import io.dingyi222666.rewrite.androlua.ui.built.navigation
 import io.dingyi222666.rewrite.androlua.ui.page.NavGraph
 import io.dingyi222666.rewrite.androlua.ui.resource.LocalWindowSizeClass
 import io.dingyi222666.rewrite.androlua.ui.resource.theme.ReWriteAndroLuaTheme
@@ -16,8 +17,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
 
-        setContent {
+        // TODO: move to built plugin
+        navigation(this)
 
+        setContent {
             val sizeClass = calculateWindowSizeClass(this)
 
             CompositionLocalProvider(

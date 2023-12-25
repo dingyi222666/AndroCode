@@ -1,6 +1,10 @@
 package io.dingyi222666.rewrite.androlua.ui.page.main
 
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import io.dingyi222666.rewrite.androlua.api.AndroLua
+
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -12,6 +16,10 @@ class MainViewModel : ViewModel() {
 
     private val _drawerShouldBeOpened = MutableStateFlow(false)
     val drawerShouldBeOpened = _drawerShouldBeOpened.asStateFlow()
+
+    val navigationBarItemList = AndroLua.ui.navigationBar.navigationBarItemFlow
+
+    val snackbarHostState = SnackbarHostState()
 
     fun openDrawer() {
         _drawerShouldBeOpened.value = true

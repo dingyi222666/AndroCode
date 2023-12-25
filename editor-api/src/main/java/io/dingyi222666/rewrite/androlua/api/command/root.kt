@@ -11,15 +11,14 @@ fun interface ICommandHandler<T : Any> {
 }
 
 data class ICommand(
-    val id: String,
-    val handler: ICommandHandler<*>
+    val id: String, val handler: ICommandHandler<*>
 )
 
 interface ICommandRegistry {
-    fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable;
-    fun registerCommand(command: ICommand): IDisposable;
+    fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable
+    fun registerCommand(command: ICommand): IDisposable
     fun registerCommandAlias(oldId: String, newId: String): IDisposable
-    fun getCommand(id: String): ICommand?;
+    fun getCommand(id: String): ICommand?
     fun getCommands(): Map<String, ICommand>
 }
 
@@ -72,11 +71,9 @@ abstract class ICommandService {
     fun registerCommandAlias(oldId: String, newId: String): IDisposable =
         commandRegistry.registerCommandAlias(oldId, newId)
 
-    fun getCommand(id: String): ICommand? =
-        commandRegistry.getCommand(id)
+    fun getCommand(id: String): ICommand? = commandRegistry.getCommand(id)
 
-    fun getCommands(): Map<String, ICommand> =
-        commandRegistry.getCommands()
+    fun getCommands(): Map<String, ICommand> = commandRegistry.getCommands()
 
     fun <T : Any> executeCommand(id: String, vararg args: Any?): T {
         val command = getCommand(id) ?: error("Command $id not found")
@@ -96,8 +93,7 @@ abstract class ICommandService {
 }
 
 class CommandService internal constructor(
-    serviceRegistry: IServiceRegistry,
-    registry: ICommandRegistry?
+    serviceRegistry: IServiceRegistry, registry: ICommandRegistry?
 ) : ICommandService(), Service {
     override val name = "command"
     override val commandRegistry: ICommandRegistry = registry ?: CommandRegistry()
@@ -105,8 +101,7 @@ class CommandService internal constructor(
 }
 
 fun createCommandService(
-    serviceRegistry: IServiceRegistry,
-    commandRegistry: ICommandRegistry? = null
+    serviceRegistry: IServiceRegistry, commandRegistry: ICommandRegistry? = null
 ): CommandService {
     return CommandService(serviceRegistry, commandRegistry)
 }

@@ -56,6 +56,7 @@ internal class ServiceRegistry(
 
         if (constructor != null) {
             rawService = constructor(this)
+            globalServices[id] = rawService
         }
 
         if (rawService != null) {

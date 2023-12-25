@@ -8,6 +8,8 @@ import io.dingyi222666.rewrite.androlua.api.service.IServiceRegistry
 import io.dingyi222666.rewrite.androlua.api.service.Service
 import io.dingyi222666.rewrite.androlua.api.service.ServiceRegistry
 import io.dingyi222666.rewrite.androlua.api.service.getAs
+import io.dingyi222666.rewrite.androlua.api.ui.UIService
+import io.dingyi222666.rewrite.androlua.api.ui.createUIService
 
 object AndroLua : IServiceRegistry() {
 
@@ -16,13 +18,18 @@ object AndroLua : IServiceRegistry() {
     init {
         registerConstructor("coroutine", ::createCoroutineService)
         registerConstructor("command", ::createCommandService)
+        registerConstructor("ui", ::createUIService)
     }
 
-    val coroutine: CoroutineService by lazy(LazyThreadSafetyMode.NONE) {
+    val coroutine by lazy(LazyThreadSafetyMode.NONE) {
         getAs<CoroutineService>("coroutine")
     }
 
-    val command: ICommandService by lazy(LazyThreadSafetyMode.NONE) {
+    val ui by lazy(LazyThreadSafetyMode.NONE) {
+        getAs<UIService>("ui")
+    }
+
+    val command by lazy(LazyThreadSafetyMode.NONE) {
         getAs<CommandService>("command")
     }
 
