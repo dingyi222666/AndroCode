@@ -31,7 +31,11 @@ android {
         }
 
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -56,6 +60,7 @@ android {
 
 dependencies {
     implementation(project(":editor-api"))
+    implementation(libs.google.errorprone.annotations)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

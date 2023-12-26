@@ -35,6 +35,11 @@
     void sourceInformationMarkerEnd(androidx.compose.runtime.Composer);
 }
 
+### Android Iconics
+-keep class **.R { *; }
+-keep class **.R$* {
+    <fields>;
+}
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
 -if @kotlinx.serialization.Serializable class **
@@ -66,14 +71,15 @@
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt # core serialization annotations
 -dontnote kotlinx.serialization.SerializationKt
+-dontwarn com.google.errorprone.annotations.MustBeClosed
 
 # Keep Serializers
 
--keep,includedescriptorclasses class com.company.package.**$$serializer { *; }  # <-- Change com.company.package
--keepclassmembers class com.company.package.** {  # <-- Change com.company.package to yours
-    *** Companion;
+-keep,includedescriptorclasses class io.dingyi222666.rewrite.androlua.**$$serializer { *; }  # <-- Change com.company.package
+-keep class io.dingyi222666.rewrite.androlua.** {  # <-- Change com.company.package to yours
+   *;
 }
--keepclasseswithmembers class com.company.package.** { # <-- Change com.company.package to yours
+-keepclasseswithmembers class io.dingyi222666.rewrite.androlua.** { # <-- Change com.company.package to yours
     kotlinx.serialization.KSerializer serializer(...);
 }
 

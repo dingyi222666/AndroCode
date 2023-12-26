@@ -59,15 +59,10 @@ fun MainPage() {
     }
 
 
-    val snackbarHostState = remember {
-        viewModel.snackbarHostState
-    }
-
     MainDrawer(
         drawerState = drawerState,
     ) {
         MainPageContent(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
             viewModel = viewModel
         )
     }
@@ -76,11 +71,14 @@ fun MainPage() {
 
 @Composable
 fun MainPageContent(
-    snackbarHost: @Composable () -> Unit = {},
     viewModel: MainViewModel
 ) {
+
+    val snackbarHostState by viewModel.snackbarHostState
+        .collectAsStateWithLifecycle()
+
     Scaffold(
-        snackbarHost = snackbarHost,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             MainAppBar(viewModel)
         },

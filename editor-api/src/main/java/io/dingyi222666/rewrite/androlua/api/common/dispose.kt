@@ -1,8 +1,60 @@
 package io.dingyi222666.rewrite.androlua.api.common
+
+import com.google.common.collect.HashMultimap
+import io.dingyi222666.rewrite.androlua.api.context.Context
+import io.dingyi222666.rewrite.androlua.api.context.Service
+
 fun interface IDisposable {
     fun dispose()
 }
 
+class Disposer(
+    override val ctx: Context
+) : Service, IDisposable {
+
+    override val id = "disposer"
+
+    private val objectTree = HashMultimap.create<IDisposable, IDisposable>()
+
+    fun register(child: IDisposable, parent: IDisposable) {
+        objectTree.put(parent, child)
+    }
+
+    override fun dispose() {
+        super.dispose()
+
+        objectTree.keySet().forEach {
+            disposeChild(it)
+        }
+    }
+
+    fun disposeChild(parent: IDisposable) {
+        val disposableList = mutableListOf<IDisposable>()
+        val disposableStack = ArrayDeque<IDisposable>()
+
+        disposableStack.add(parent)
+
+        while (disposableStack.isNotEmpty()) {
+            val disposable = disposableStack.removeLast()
+
+            if (disposable != parent) {
+                disposableList.add(disposable)
+            }
+
+            if (!objectTree.containsKey(disposable)) {
+                continue
+            }
+            disposableStack.addAll(
+                objectTree[disposable]
+            )
+        }
+
+        for (disposable in disposableList) {
+            disposable.dispose()
+        }
+    }
+
+}
 
 
 class DisposableStore : IDisposable {
@@ -27,4 +79,8 @@ class DisposableStore : IDisposable {
     fun remove(disposable: IDisposable) {
         disposables.remove(disposable)
     }
+}
+
+fun createDisposer(ctx: Context): Disposer {
+    return Disposer(ctx)
 }

@@ -1,8 +1,10 @@
 package io.dingyi222666.rewrite.androlua.api.command
 
+import io.dingyi222666.rewrite.androlua.api.AndroLua
 import io.dingyi222666.rewrite.androlua.api.common.IDisposable
-import io.dingyi222666.rewrite.androlua.api.service.IServiceRegistry
-import io.dingyi222666.rewrite.androlua.api.service.Service
+import io.dingyi222666.rewrite.androlua.api.context.Context
+import io.dingyi222666.rewrite.androlua.api.context.Service
+import io.dingyi222666.rewrite.androlua.api.disposer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,9 +24,12 @@ interface ICommandRegistry {
     fun getCommands(): Map<String, ICommand>
 }
 
-internal class CommandRegistry : ICommandRegistry {
+internal class CommandRegistry(
+    private val ctx: Context = AndroLua
+) : ICommandRegistry {
 
     private val commands = mutableMapOf<String, ICommand>()
+
 
     override fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable {
         return registerCommand(ICommand(id, command))
@@ -40,9 +45,13 @@ internal class CommandRegistry : ICommandRegistry {
 
         commands[id] = command
 
-        return IDisposable {
+        val disposable = IDisposable {
             commands.remove(id)
         }
+
+        ctx.disposer.register(disposable, ctx)
+
+        return disposable
     }
 
     override fun registerCommandAlias(oldId: String, newId: String): IDisposable {
@@ -78,6 +87,7 @@ abstract class ICommandService {
     fun <T : Any> executeCommand(id: String, vararg args: Any?): T {
         val command = getCommand(id) ?: error("Command $id not found")
 
+        @Suppress("UNCHECKED_CAST")
         return command.handler.execute(*args) as T
     }
 
@@ -85,6 +95,7 @@ abstract class ICommandService {
         val command = getCommand(id) ?: error("Command $id not found")
 
         val result = withContext(Dispatchers.IO) {
+            @Suppress("UNCHECKED_CAST")
             command.handler.execute(*args) as T
         }
 
@@ -93,16 +104,25 @@ abstract class ICommandService {
 }
 
 class CommandService internal constructor(
-    serviceRegistry: IServiceRegistry, registry: ICommandRegistry?
+    override val ctx: Context, registry: ICommandRegistry?
 ) : ICommandService(), Service {
-    override val name = "command"
-    override val commandRegistry: ICommandRegistry = registry ?: CommandRegistry()
-    override val registry: IServiceRegistry = serviceRegistry
+    override val id = "command"
+    override val commandRegistry: ICommandRegistry = registry ?: CommandRegistry(this.ctx)
+
+    override fun fork(parent: Context?): CommandService {
+        return CommandService(parent ?: ctx, commandRegistry)
+    }
 }
 
 fun createCommandService(
-    serviceRegistry: IServiceRegistry, commandRegistry: ICommandRegistry? = null
+    ctx: Context, commandRegistry: ICommandRegistry? = null
 ): CommandService {
-    return CommandService(serviceRegistry, commandRegistry)
+    val root = ctx.root.getOrNull<CommandService>("command")
+
+    if (root != null) {
+        return root.fork(ctx)
+    }
+
+    return CommandService(ctx, commandRegistry)
 }
 

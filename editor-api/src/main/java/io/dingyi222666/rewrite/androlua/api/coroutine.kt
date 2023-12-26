@@ -1,17 +1,17 @@
 package io.dingyi222666.rewrite.androlua.api
 
-import io.dingyi222666.rewrite.androlua.api.service.IServiceRegistry
-import io.dingyi222666.rewrite.androlua.api.service.Service
+import io.dingyi222666.rewrite.androlua.api.context.Context
+import io.dingyi222666.rewrite.androlua.api.context.Service
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 
 class CoroutineService internal constructor(
-    override val registry: IServiceRegistry
+    override val ctx: Context
 ) : Service {
 
-    override val name = "coroutine"
+    override val id = "coroutine"
 
     val rootJob = SupervisorJob()
     val rootCoroutine = CoroutineScope(Dispatchers.IO + rootJob)
@@ -27,6 +27,6 @@ class CoroutineService internal constructor(
     }
 }
 
-fun createCoroutineService(registry: IServiceRegistry): CoroutineService {
+fun createCoroutineService(registry: Context): CoroutineService {
     return CoroutineService(registry)
 }

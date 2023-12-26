@@ -1,27 +1,28 @@
 package io.dingyi222666.rewrite.androlua.api.ui
 
-import io.dingyi222666.rewrite.androlua.api.service.IServiceRegistry
-import io.dingyi222666.rewrite.androlua.api.service.Service
-import io.dingyi222666.rewrite.androlua.api.service.getAs
+import io.dingyi222666.rewrite.androlua.api.context.Context
+import io.dingyi222666.rewrite.androlua.api.context.Service
+import io.dingyi222666.rewrite.androlua.api.context.getAs
 
 class UIService internal constructor(
-    serviceRegistry: IServiceRegistry
-) : Service {
-
-    override val name = "ui"
-
-    override val registry: IServiceRegistry = serviceRegistry
+    override val ctx: Context
+) : Context("ui", ctx), Service {
 
     init {
-        registry.registerConstructor("ui.navigationBar", ::createNavigationBarService)
+        ctx.registerConstructor("ui.navigationBar", ::createNavigationBarService)
     }
 
     val navigationBar by lazy(LazyThreadSafetyMode.NONE) {
-        serviceRegistry.getAs<NavigationBarService>("ui.navigationBar")
+        getAs<NavigationBarService>("ui.navigationBar")
+    }
+
+    override fun dispose() {
+        super<Service>.dispose()
+        super<Context>.dispose()
     }
 }
 
-fun createUIService(serviceRegistry: IServiceRegistry): UIService {
-    return UIService(serviceRegistry)
+fun createUIService(ctx: Context): UIService {
+    return ctx.getOrNull("ui") ?: UIService(ctx)
 }
 

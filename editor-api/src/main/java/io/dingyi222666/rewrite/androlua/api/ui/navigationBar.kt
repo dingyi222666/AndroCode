@@ -3,20 +3,20 @@ package io.dingyi222666.rewrite.androlua.api.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.dingyi222666.rewrite.androlua.api.AndroLua
-import io.dingyi222666.rewrite.androlua.api.service.IServiceRegistry
-import io.dingyi222666.rewrite.androlua.api.service.Service
+import io.dingyi222666.rewrite.androlua.api.context.Context
+import io.dingyi222666.rewrite.androlua.api.context.Service
+import io.dingyi222666.rewrite.androlua.api.coroutine
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NavigationBarService internal constructor(
-    serviceRegistry: IServiceRegistry
+    serviceRegistry: Context
 ) : Service {
 
-    override val name = "navigationBar"
+    override val id = "navigationBar"
 
-    override val registry: IServiceRegistry = serviceRegistry
+    override val ctx: Context = serviceRegistry
 
     private val navigationBarItemList = mutableListOf<NavigationBarItem>()
 
@@ -30,8 +30,7 @@ class NavigationBarService internal constructor(
         icon: ImageVector,
         description: String? = null,
         onClick: (() -> Unit)? = null,
-        content: (@Composable () -> Unit)? = null,
-        panel: (@Composable () -> Unit)? = null
+        slot: NavigationBarSlot? = null
     ) {
         navigationBarItemList.add(
             NavigationBarItemImpl(
@@ -39,8 +38,7 @@ class NavigationBarService internal constructor(
                 icon,
                 description,
                 onClick,
-                content,
-                panel
+                slot
             )
         )
 
@@ -68,13 +66,20 @@ class NavigationBarService internal constructor(
     }
 }
 
+interface NavigationBarSlot {
+    @Composable
+    fun panel()
+
+    @Composable
+    fun slot()
+}
+
 data class NavigationBarItemImpl(
     override val id: String,
     override val icon: ImageVector,
     override val description: String?,
     override val onClick: (() -> Unit)?,
-    override val content: (@Composable () -> Unit)?,
-    override val panel: (@Composable () -> Unit)?
+    override val slot: NavigationBarSlot?
 ) : NavigationBarItem
 
 
@@ -88,11 +93,9 @@ interface NavigationBarItem {
 
     val onClick: (() -> Unit)?
 
-    val panel: (@Composable () -> Unit)?
-
-    val content: (@Composable () -> Unit)?
+    val slot: NavigationBarSlot?
 }
 
-fun createNavigationBarService(serviceRegistry: IServiceRegistry): NavigationBarService {
+fun createNavigationBarService(serviceRegistry: Context): NavigationBarService {
     return NavigationBarService(serviceRegistry)
 }

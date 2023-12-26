@@ -19,7 +19,8 @@ class MainViewModel : ViewModel() {
 
     val navigationBarItemList = AndroLua.ui.navigationBar.navigationBarItemFlow
 
-    val snackbarHostState = SnackbarHostState()
+    val _snackbarHostState = MutableStateFlow(SnackbarHostState())
+    val snackbarHostState = _snackbarHostState.asStateFlow()
 
     fun openDrawer() {
         _drawerShouldBeOpened.value = true

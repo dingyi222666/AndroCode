@@ -73,27 +73,26 @@ fun NavigationBar() {
         ) {
 
             LazyColumn {
-                items(navigationBarItems) { item ->
+                items(navigationBarItems, { it.id }) { item ->
                     SelectionImageButton(
                         modifier = Modifier.padding(4.dp),
                         image = item.icon,
                         contentDescription = item.description ?: item.id,
                         selected = selectedTag === item.id,
                         onClick = {
-                            selectedTag = item.id
                             item.onClick?.invoke()
+                            selectedTag = item.id
                         }
                     )
                 }
             }
 
             for (item in navigationBarItems) {
-                val contentSlot = item.content
-                if ((item.id === selectedTag) && (contentSlot != null)) {
-                    contentSlot.invoke()
+                val slot = item.slot
+                if (item.id === selectedTag && slot != null) {
+                    slot.slot()
                 }
             }
-
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -130,7 +129,7 @@ fun SelectionImageButton(
                 Text(text = contentDescription)
             }
         },
-        state = rememberTooltipState(initialIsVisible = true)
+        state = rememberTooltipState(initialIsVisible = false)
     ) {
         Box(
             modifier =
