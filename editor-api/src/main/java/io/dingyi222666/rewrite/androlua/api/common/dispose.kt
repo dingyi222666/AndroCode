@@ -54,33 +54,54 @@ class Disposer(
         }
     }
 
-}
+    fun markAsDisposed(disposable: IDisposable) {
+        // search disposable
 
+        // keys
 
-class DisposableStore : IDisposable {
-    private val disposables = ArrayList<IDisposable>()
-    fun add(disposable: IDisposable) {
-        disposables.add(disposable)
+        if (objectTree.containsKey(disposable)) {
+            disposeChild(disposable)
+
+            return
+        }
+
+        if (objectTree.containsValue(disposable)) {
+            // search ...
+
+            objectTree.entries().filter {
+                it.value == disposable
+            }.toList().forEach {
+                objectTree.remove(it.key, it.value)
+            }
+        }
+
     }
 
-    override fun dispose() {
 
-        for (disposable in disposables) {
-            disposable.dispose()
+    class DisposableStore : IDisposable {
+        private val disposables = ArrayList<IDisposable>()
+        fun add(disposable: IDisposable) {
+            disposables.add(disposable)
+        }
+
+        override fun dispose() {
+
+            for (disposable in disposables) {
+                disposable.dispose()
+            }
+        }
+
+        fun clear() {
+            disposables.clear()
+        }
+
+        fun size() = disposables.size
+
+        fun remove(disposable: IDisposable) {
+            disposables.remove(disposable)
         }
     }
 
-    fun clear() {
-        disposables.clear()
+    fun createDisposer(ctx: Context): Disposer {
+        return Disposer(ctx)
     }
-
-    fun size() = disposables.size
-
-    fun remove(disposable: IDisposable) {
-        disposables.remove(disposable)
-    }
-}
-
-fun createDisposer(ctx: Context): Disposer {
-    return Disposer(ctx)
-}

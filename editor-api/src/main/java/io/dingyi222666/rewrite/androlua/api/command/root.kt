@@ -51,7 +51,10 @@ internal class CommandRegistry(
 
         ctx.disposer.register(disposable, ctx)
 
-        return disposable
+        return IDisposable {
+            disposable.dispose()
+            ctx.disposer.markAsDisposed(disposable)
+        }
     }
 
     override fun registerCommandAlias(oldId: String, newId: String): IDisposable {
