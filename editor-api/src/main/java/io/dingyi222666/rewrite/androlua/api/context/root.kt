@@ -44,7 +44,6 @@ open class Context(
     fun register(service: Service): IDisposable {
         globalServices[service.id] = service
 
-
         disposer.register(service, this)
 
         return IDisposable {

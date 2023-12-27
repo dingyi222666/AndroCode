@@ -76,32 +76,32 @@ class Disposer(
         }
 
     }
+}
 
+class DisposableStore : IDisposable {
+    private val disposables = ArrayList<IDisposable>()
+    fun add(disposable: IDisposable) {
+        disposables.add(disposable)
+    }
 
-    class DisposableStore : IDisposable {
-        private val disposables = ArrayList<IDisposable>()
-        fun add(disposable: IDisposable) {
-            disposables.add(disposable)
-        }
+    override fun dispose() {
 
-        override fun dispose() {
-
-            for (disposable in disposables) {
-                disposable.dispose()
-            }
-        }
-
-        fun clear() {
-            disposables.clear()
-        }
-
-        fun size() = disposables.size
-
-        fun remove(disposable: IDisposable) {
-            disposables.remove(disposable)
+        for (disposable in disposables) {
+            disposable.dispose()
         }
     }
 
-    fun createDisposer(ctx: Context): Disposer {
-        return Disposer(ctx)
+    fun clear() {
+        disposables.clear()
     }
+
+    fun size() = disposables.size
+
+    fun remove(disposable: IDisposable) {
+        disposables.remove(disposable)
+    }
+}
+
+fun createDisposer(ctx: Context): Disposer {
+    return Disposer(ctx)
+}

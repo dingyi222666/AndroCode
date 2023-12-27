@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 fun interface ICommandHandler<T : Any> {
-    fun execute(vararg input: Any?): T
+    suspend fun execute(vararg input: Any?): T
 }
 
 data class ICommand(
@@ -87,14 +87,8 @@ abstract class ICommandService {
 
     fun getCommands(): Map<String, ICommand> = commandRegistry.getCommands()
 
-    fun <T : Any> executeCommand(id: String, vararg args: Any?): T {
-        val command = getCommand(id) ?: error("Command $id not found")
 
-        @Suppress("UNCHECKED_CAST")
-        return command.handler.execute(*args) as T
-    }
-
-    suspend fun <T : Any> executeCommandAsync(id: String, vararg args: Any?): T {
+    suspend fun <T : Any> executeCommand(id: String, vararg args: Any?): T {
         val command = getCommand(id) ?: error("Command $id not found")
 
         val result = withContext(Dispatchers.IO) {

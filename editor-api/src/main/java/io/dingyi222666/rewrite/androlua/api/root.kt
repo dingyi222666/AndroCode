@@ -7,6 +7,8 @@ import io.dingyi222666.rewrite.androlua.api.common.createDisposer
 import io.dingyi222666.rewrite.androlua.api.context.Context
 
 import io.dingyi222666.rewrite.androlua.api.context.getAs
+import io.dingyi222666.rewrite.androlua.api.event.EventService
+import io.dingyi222666.rewrite.androlua.api.event.createEventService
 import io.dingyi222666.rewrite.androlua.api.ui.UIService
 import io.dingyi222666.rewrite.androlua.api.ui.createUIService
 
@@ -28,6 +30,9 @@ val Context.command
     get() =
         getAs<CommandService>("command")
 
+val Context.event
+    get() = getAs<EventService>("event")
+
 val Context.disposer
     get() = getAs<Disposer>("disposer")
 
@@ -36,6 +41,7 @@ fun Context.configureBase() {
     registerConstructor("command", ::createCommandService)
     registerConstructor("ui", ::createUIService)
     registerConstructor("disposer", ::createDisposer)
+    registerConstructor("event", ::createEventService)
 }
 
 
