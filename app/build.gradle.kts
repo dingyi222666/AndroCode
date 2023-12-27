@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":editor-api"))
+    implementation(project(":ide-api"))
     implementation(libs.google.errorprone.annotations)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)

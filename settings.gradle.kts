@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "rewrite-androlua"
-include(":app",":editor-api")
+include(":app",":ide-api")
