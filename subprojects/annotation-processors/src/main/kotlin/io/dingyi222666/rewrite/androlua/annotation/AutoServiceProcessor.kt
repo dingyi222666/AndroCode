@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
 
 class AutoServiceProcessor(
     private val codeGenerator: CodeGenerator,
-    val logger: KSPLogger
+    private val logger: KSPLogger
 ) : SymbolProcessor {
 
     private val services = mutableListOf<AutoServiceInfo>()
@@ -46,67 +46,66 @@ class AutoServiceProcessor(
                     return emptyList()
                 }
 
-        symbols
+        val filtered = symbols
             .filterIsInstance<KSFunctionDeclaration>()
             .filter { function -> function.parent is KSFile || function.qualifiedName?.getQualifier() == function.packageName.getQualifier() }
             .filter {
                 it.parameters.size == 1 && it.parameters[0].type.resolve()
                     .toClassName().canonicalName == "io.dingyi222666.rewrite.androlua.api.context.Context"
+            }.toList()
+
+
+        filtered.forEach { function ->
+
+            val targetAnnotation = function.annotations.find {
+                it.annotationType.resolve() == autoServiceType
             }
-            .forEach { function ->
-
-                val targetAnnotation = function.annotations.find {
-                    it.annotationType.resolve() == autoServiceType
-                }
-                    ?: run {
-                        logger.error(
-                            "@AutoService annotation not found",
-                            function
-                        )
-                        return@forEach
-                    }
-
-                if (targetAnnotation.arguments.size != 1) {
+                ?: run {
                     logger.error(
-                        "@AutoService annotation has no target service name",
+                        "@AutoService annotation not found",
                         function
                     )
                     return@forEach
                 }
 
-                val targetAnnotationValue =
-                    (targetAnnotation.arguments[0].value as KSType).toClassName().canonicalName
-
-                var serviceFunctionPrefix =
-                    function.packageName.getQualifier() + "." + function.containingFile!!.fileName
-                        .replaceFirstChar { it.uppercase() }
-                        .replace(".kt", "Kt.")
-
-                val jvmNameAnnotation = function.containingFile?.annotations?.find {
-                    it.annotationType.resolve()
-                        .toClassName().canonicalName == JvmName::class.qualifiedName
-                }
-
-                if (jvmNameAnnotation != null) {
-                    serviceFunctionPrefix =
-                        function.packageName.getQualifier() + "." + jvmNameAnnotation.arguments[0].value.toString() + "."
-                }
-
-                services.add(
-                    AutoServiceInfo(
-                        serviceFile = function.containingFile,
-                        serviceFunction = serviceFunctionPrefix + function.simpleName.getShortName(),
-                        targetServiceName =
-                        targetAnnotationValue
-                    )
+            if (targetAnnotation.arguments.size != 1) {
+                logger.error(
+                    "@AutoService annotation has no target service name",
+                    function
                 )
+                return@forEach
             }
 
-        logger.info("service $services")
+            val targetAnnotationValue =
+                (targetAnnotation.arguments[0].value as KSType).toClassName().canonicalName
 
-        return emptyList()
+            var serviceFunctionPrefix =
+                function.packageName.getQualifier() + "." + function.containingFile!!.fileName
+                    .replaceFirstChar { it.uppercase() }
+                    .replace(".kt", "Kt.")
+
+            val jvmNameAnnotation = function.containingFile?.annotations?.find {
+                it.annotationType.resolve()
+                    .toClassName().canonicalName == JvmName::class.qualifiedName
+            }
+
+            if (jvmNameAnnotation != null) {
+                serviceFunctionPrefix =
+                    function.packageName.getQualifier() + "." + jvmNameAnnotation.arguments[0].value.toString() + "."
+            }
+
+            services.add(
+                AutoServiceInfo(
+                    serviceFile = function.containingFile,
+                    serviceFunction = serviceFunctionPrefix + function.simpleName.getShortName(),
+                    targetServiceName =
+                    targetAnnotationValue
+                )
+            )
+        }
+
+        return filtered
     }
-
 
     override fun finish() {
         generateConfigFiles()
@@ -122,25 +121,27 @@ class AutoServiceProcessor(
             it.targetServiceName
         }.forEach { it ->
 
+            logger.info("Generating service file for ${it.value}")
+
             val services = it.value
+            val serviceName = it.key
+            val servicePath = ServicesFiles.getPath(serviceName)
+
+            val outputStream = codeGenerator.createNewFile(
+                Dependencies(
+                    true,
+                    *(services.mapNotNull { it.serviceFile }.toTypedArray())
+                ),
+                "",
+                servicePath,
+                ""
+            )
+
             for (info in services) {
-                val serviceName = it.key
-                val servicePath = ServicesFiles.getPath(serviceName)
-
-
-                codeGenerator.createNewFile(
-                    Dependencies(
-                        true,
-                        *(services.mapNotNull { it.serviceFile }.toTypedArray())
-                    ),
-                    "",
-                    servicePath,
-                    ""
-                ).use { stream ->
-                    ServicesFiles.writeServiceFile(services.map { it.serviceFunction }, stream)
-                }
-
+                ServicesFiles.writeServiceFile(services.map { it.serviceFunction }, outputStream)
             }
+
+            outputStream.close()
         }
     }
 }

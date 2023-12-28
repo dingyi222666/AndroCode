@@ -1,7 +1,6 @@
-@file:JvmName("xxx")
-
 package io.dingyi222666.rewrite.androlua.api
 
+import io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.rewrite.androlua.annotation.AutoService
 import io.dingyi222666.rewrite.androlua.api.context.Context
 import io.dingyi222666.rewrite.androlua.api.context.Service
@@ -17,10 +16,8 @@ class CoroutineService internal constructor(
     override val ctx: Context
 ) : Service {
 
-
     override val id = "coroutine"
 
-    @get:JvmName("xxxx")
     val rootJob = SupervisorJob()
     val rootCoroutine = CoroutineScope(Dispatchers.IO + rootJob)
 
@@ -45,6 +42,7 @@ class CoroutineService internal constructor(
 }
 
 @AutoService(AndroLua::class)
+@AutoGenerateServiceExtension(Context::class, "coroutine", "coroutine")
 fun createCoroutineService(registry: Context): CoroutineService {
     return CoroutineService(registry)
 }

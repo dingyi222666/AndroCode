@@ -9,7 +9,9 @@ annotation class AutoService(
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class AutoGenerateServiceExtension(
-    val targetClass: KClass<*>
+    val targetClass: KClass<*>,
+    val id: String,
+    val valName: String,
 )
 
 @Target(AnnotationTarget.CLASS)

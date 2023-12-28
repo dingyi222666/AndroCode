@@ -1,2 +1,3 @@
 io.dingyi222666.rewrite.androlua.annotation.PluginMainProcessorProvider
 io.dingyi222666.rewrite.androlua.annotation.AutoServiceProcessorProvider
+io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtensionProcessorProvider

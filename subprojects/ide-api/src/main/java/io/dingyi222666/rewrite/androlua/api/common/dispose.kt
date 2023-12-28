@@ -1,12 +1,16 @@
 package io.dingyi222666.rewrite.androlua.api.common
 
 import com.google.common.collect.HashMultimap
+import io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.rewrite.androlua.annotation.AutoService
+import io.dingyi222666.rewrite.androlua.api.AndroLua
 import io.dingyi222666.rewrite.androlua.api.context.Context
 import io.dingyi222666.rewrite.androlua.api.context.Service
 
 fun interface IDisposable {
     fun dispose()
 }
+
 
 class Disposer(
     override val ctx: Context
@@ -102,6 +106,8 @@ class DisposableStore : IDisposable {
     }
 }
 
+@AutoService(AndroLua::class)
+@AutoGenerateServiceExtension(Context::class, "disposer", "disposer")
 fun createDisposer(ctx: Context): Disposer {
     return Disposer(ctx)
 }

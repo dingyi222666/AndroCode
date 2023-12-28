@@ -26,11 +26,14 @@ class PluginMainProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(PluginMain::class.qualifiedName ?: "")
 
-        symbols
+        val filtered = symbols
             .filterIsInstance<KSClassDeclaration>()
-            .forEach { it.accept(BuilderVisitor(), Unit) }
+            .toList()
 
-        return emptyList()
+        filtered.forEach { it.accept(BuilderVisitor(), Unit) }
+
+
+        return filtered
     }
 
     override fun finish() {

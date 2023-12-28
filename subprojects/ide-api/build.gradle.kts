@@ -23,6 +23,7 @@ android {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
+
             }
 
             debug {
@@ -32,8 +33,10 @@ android {
                     "proguard-rules.pro"
                 )
             }
+
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -41,10 +44,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+
 }
 
 dependencies {
-   ksp(project(":annotation-processors"))
+    ksp(project(":annotation-processors"))
     implementation(projects.ideAnnotation)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)

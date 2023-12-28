@@ -1,5 +1,8 @@
 package io.dingyi222666.rewrite.androlua.api.ui
 
+import io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.rewrite.androlua.annotation.AutoService
+import io.dingyi222666.rewrite.androlua.api.AndroLua
 import io.dingyi222666.rewrite.androlua.api.context.Context
 import io.dingyi222666.rewrite.androlua.api.context.Service
 import io.dingyi222666.rewrite.androlua.api.context.getAs
@@ -22,6 +25,8 @@ class UIService internal constructor(
     }
 }
 
+@AutoService(AndroLua::class)
+@AutoGenerateServiceExtension(Context::class, "ui", "ui")
 fun createUIService(ctx: Context): UIService {
     return ctx.getOrNull("ui") ?: UIService(ctx)
 }

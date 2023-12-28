@@ -1,5 +1,8 @@
 package io.dingyi222666.rewrite.androlua.api.event
 
+import io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.rewrite.androlua.annotation.AutoService
+import io.dingyi222666.rewrite.androlua.api.AndroLua
 import io.dingyi222666.rewrite.androlua.api.context.Context
 import io.dingyi222666.rewrite.androlua.api.context.Service
 
@@ -16,6 +19,8 @@ class EventService internal constructor(
     }
 }
 
+@AutoService(AndroLua::class)
+@AutoGenerateServiceExtension(Context::class, "event", "event")
 fun createEventService(ctx: Context): EventService {
     val parentService = ctx.parent?.getOrNull<EventService>("event")
 

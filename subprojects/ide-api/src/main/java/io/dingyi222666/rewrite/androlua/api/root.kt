@@ -22,21 +22,6 @@ object AndroLua : Context("root") {
     }
 }
 
-val Context.coroutine
-    get() = getAs<CoroutineService>("coroutine")
-
-val Context.ui
-    get() = getAs<UIService>("ui")
-
-val Context.command
-    get() =
-        getAs<CommandService>("command")
-
-val Context.event
-    get() = getAs<EventService>("event")
-
-val Context.disposer
-    get() = getAs<Disposer>("disposer")
 
 fun Context.configureBase() {
     registerConstructor("coroutine", ::createCoroutineService)

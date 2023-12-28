@@ -1,6 +1,8 @@
 package io.dingyi222666.rewrite.androlua.api.command
 
 
+import io.dingyi222666.rewrite.androlua.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.rewrite.androlua.annotation.AutoService
 import io.dingyi222666.rewrite.androlua.api.AndroLua
 import io.dingyi222666.rewrite.androlua.api.common.IDisposable
 import io.dingyi222666.rewrite.androlua.api.context.Context
@@ -141,7 +143,8 @@ class CommandService internal constructor(
         return CommandService(parent ?: ctx, commandRegistry)
     }
 }
-
+@AutoService(AndroLua::class)
+@AutoGenerateServiceExtension(Context::class, "command", "command")
 fun createCommandService(
     ctx: Context
 ): CommandService {
