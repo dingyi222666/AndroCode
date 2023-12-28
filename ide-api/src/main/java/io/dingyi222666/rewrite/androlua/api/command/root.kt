@@ -74,8 +74,17 @@ internal class CommandRegistry(
 
 }
 
-abstract class ICommandService {
+data class CommandDescriptor(
+    val id: String,
+    val title: String,
+    val description: String
+)
+
+
+abstract class ICommandService : Service {
     internal abstract val commandRegistry: ICommandRegistry
+
+    internal abstract val descriptionList: MutableList<CommandDescriptor>
 
     fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable =
         commandRegistry.registerCommand(id, command)
@@ -83,10 +92,30 @@ abstract class ICommandService {
     fun registerCommandAlias(oldId: String, newId: String): IDisposable =
         commandRegistry.registerCommandAlias(oldId, newId)
 
+    fun registerCommandDescription(id: String, title: String, description: String): IDisposable {
+        descriptionList.add(CommandDescriptor(id, title, description))
+
+        val disposable = IDisposable {
+            descriptionList.remove(CommandDescriptor(id, title, description))
+        }
+
+        ctx.disposer.register(disposable, ctx)
+
+        return IDisposable {
+            disposable.dispose()
+            ctx.disposer.markAsDisposed(disposable)
+        }
+    }
+
     fun getCommand(id: String): ICommand? = commandRegistry.getCommand(id)
 
-    fun getCommands(): Map<String, ICommand> = commandRegistry.getCommands()
+    fun getCommandDescription(id: String): CommandDescriptor {
+        return descriptionList.find { it.id == id } ?: CommandDescriptor(
+            id, title = id, description = ""
+        )
+    }
 
+    fun getCommands(): Map<String, ICommand> = commandRegistry.getCommands()
 
     suspend fun <T : Any> executeCommand(id: String, vararg args: Any?): T {
         val command = getCommand(id) ?: error("Command $id not found")
@@ -102,9 +131,10 @@ abstract class ICommandService {
 
 class CommandService internal constructor(
     override val ctx: Context, registry: ICommandRegistry?
-) : ICommandService(), Service {
+) : ICommandService() {
     override val id = "command"
     override val commandRegistry: ICommandRegistry = registry ?: CommandRegistry(this.ctx)
+    override val descriptionList = mutableListOf<CommandDescriptor>()
 
     override fun fork(parent: Context?): CommandService {
         return CommandService(parent ?: ctx, commandRegistry)
