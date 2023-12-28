@@ -49,7 +49,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.6-dev-k2.0.0-Beta1-06a03be2b42"
     }
     packaging {
         resources {
@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":ide-api"))
+    implementation(projects.ideApi)
     implementation(libs.google.errorprone.annotations)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)

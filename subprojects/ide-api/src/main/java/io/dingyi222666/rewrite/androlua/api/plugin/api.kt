@@ -8,6 +8,3 @@ interface ReWriteAndroLuaPlugin {
 
 }
 
-
-@Target(AnnotationTarget.CLASS)
-annotation class PluginMain

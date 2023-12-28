@@ -28,15 +28,15 @@ class Trie private constructor(
      * Checks if the trie contains the given character sequence or any prefixes of the sequence.
      */
     fun find(seq: CharSequence): Boolean {
-        if (seq.length == 0) {
+        if (seq.isEmpty()) {
             return false
         }
         var idx = 0
-        var cur: Trie? = this
+        var cur: Trie = this
         while (idx < seq.length) {
             val c = seq[idx]
             var found = false
-            for (transition in cur!!.transitions) {
+            for (transition in cur.transitions) {
                 if (transition!!.c == c) {
                     cur = transition
                     idx++
@@ -53,7 +53,7 @@ class Trie private constructor(
                 return cur.terminal
             }
         }
-        return cur!!.terminal
+        return cur.terminal
     }
 
     fun dump(all: Boolean, onWord: (String) -> Unit) {

@@ -244,33 +244,7 @@ class FilteringClassLoader(parent: ClassLoader?, spec: Spec) : ClassLoader(paren
                     xor disallowedPackagePrefixes.hashCode())
         }
 
-        fun getPackageNames(): Set<String> {
-            return packageNames
-        }
 
-        fun getPackagePrefixes(): Set<String> {
-            return packagePrefixes
-        }
-
-        fun getResourcePrefixes(): Set<String> {
-            return resourcePrefixes
-        }
-
-        fun getResourceNames(): Set<String> {
-            return resourceNames
-        }
-
-        fun getClassNames(): Set<String> {
-            return classNames
-        }
-
-        fun getDisallowedClassNames(): Set<String> {
-            return disallowedClassNames
-        }
-
-        fun getDisallowedPackagePrefixes(): Set<String> {
-            return disallowedPackagePrefixes
-        }
 
         companion object {
             private fun addAll(collection: MutableCollection<String>, elements: Iterable<String>) {

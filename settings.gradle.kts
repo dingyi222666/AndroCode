@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":ide-annotation")
+
+
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -22,6 +25,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://androidx.dev/storage/compose-compiler/repository")
     }
 }
 

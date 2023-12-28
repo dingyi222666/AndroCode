@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlinKsp)
 }
 
 android {
@@ -43,6 +44,8 @@ android {
 }
 
 dependencies {
+   ksp(project(":annotation-processors"))
+    implementation(projects.ideAnnotation)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

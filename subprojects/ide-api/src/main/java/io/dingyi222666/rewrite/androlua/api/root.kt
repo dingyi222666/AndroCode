@@ -9,6 +9,7 @@ import io.dingyi222666.rewrite.androlua.api.context.Context
 import io.dingyi222666.rewrite.androlua.api.context.getAs
 import io.dingyi222666.rewrite.androlua.api.event.EventService
 import io.dingyi222666.rewrite.androlua.api.event.createEventService
+import io.dingyi222666.rewrite.androlua.api.plugin.Test
 import io.dingyi222666.rewrite.androlua.api.ui.UIService
 import io.dingyi222666.rewrite.androlua.api.ui.createUIService
 
@@ -17,6 +18,7 @@ object AndroLua : Context("root") {
 
     init {
         configureBase()
+        val s = Test()
     }
 }
 
