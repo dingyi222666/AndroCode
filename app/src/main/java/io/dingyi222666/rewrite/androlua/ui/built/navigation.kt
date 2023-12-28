@@ -6,14 +6,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Build
 import androidx.compose.material.icons.twotone.Folder
 import androidx.compose.material.icons.twotone.MyLocation
-import androidx.compose.material3.SnackbarHostState
-import androidx.lifecycle.lifecycleScope
 import io.dingyi222666.rewrite.androlua.MainActivity
 import io.dingyi222666.rewrite.androlua.api.AndroLua
+import io.dingyi222666.rewrite.androlua.api.ui
 import io.dingyi222666.rewrite.androlua.ui.page.main.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 fun navigation(activity: MainActivity) {
     /* val drawerItems = listOf(

@@ -142,7 +142,13 @@ class CommandService internal constructor(
 }
 
 fun createCommandService(
-    ctx: Context, commandRegistry: ICommandRegistry? = null
+    ctx: Context
+): CommandService {
+    return createCommandService(ctx, null)
+}
+
+fun createCommandService(
+    ctx: Context, commandRegistry: ICommandRegistry?
 ): CommandService {
     val root = ctx.root.getOrNull<CommandService>("command")
 

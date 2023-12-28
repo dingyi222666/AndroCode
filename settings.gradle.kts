@@ -1,3 +1,9 @@
+@file:Suppress("UnstableApiUsage")
+
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+
 pluginManagement {
     repositories {
         google {
@@ -20,4 +26,13 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "rewrite-androlua"
-include(":app",":ide-api")
+include(":app")
+
+//foreach platform
+file("subprojects").listFiles()
+    ?.forEach {
+        val name = it.name
+        include(name)
+        project(":$name").projectDir = it
+
+    }
