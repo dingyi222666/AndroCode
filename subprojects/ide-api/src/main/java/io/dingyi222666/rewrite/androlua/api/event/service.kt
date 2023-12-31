@@ -19,10 +19,10 @@ class EventService internal constructor(
     }
 }
 
-@AutoService(AndroLua::class)
+@AutoService(Context::class, "event")
 @AutoGenerateServiceExtension(Context::class, "event", "event")
 fun createEventService(ctx: Context): EventService {
-    val parentService = ctx.parent?.getOrNull<EventService>("event")
+    val parentService = ctx.parent?.getOrNull<EventService>("event", false)
 
     if (parentService != null) {
         return EventService(ctx, parentService)

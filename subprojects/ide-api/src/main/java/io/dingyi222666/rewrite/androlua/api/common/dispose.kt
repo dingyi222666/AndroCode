@@ -106,7 +106,7 @@ class DisposableStore : IDisposable {
     }
 }
 
-@AutoService(AndroLua::class)
+@AutoService(Context::class, "disposer")
 @AutoGenerateServiceExtension(Context::class, "disposer", "disposer")
 fun createDisposer(ctx: Context): Disposer {
     return Disposer(ctx)

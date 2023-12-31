@@ -4,7 +4,8 @@ import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.FUNCTION)
 annotation class AutoService(
-    val targetClass: KClass<*>
+    val targetClass: KClass<*>,
+    val id: String
 )
 
 @Target(AnnotationTarget.FUNCTION)

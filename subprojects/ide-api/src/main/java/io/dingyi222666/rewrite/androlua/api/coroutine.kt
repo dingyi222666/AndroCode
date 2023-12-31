@@ -41,7 +41,7 @@ class CoroutineService internal constructor(
     }
 }
 
-@AutoService(AndroLua::class)
+@AutoService(Context::class, "coroutine")
 @AutoGenerateServiceExtension(Context::class, "coroutine", "coroutine")
 fun createCoroutineService(registry: Context): CoroutineService {
     return CoroutineService(registry)

@@ -143,7 +143,8 @@ class CommandService internal constructor(
         return CommandService(parent ?: ctx, commandRegistry)
     }
 }
-@AutoService(AndroLua::class)
+
+@AutoService(Context::class, "command")
 @AutoGenerateServiceExtension(Context::class, "command", "command")
 fun createCommandService(
     ctx: Context
@@ -154,7 +155,7 @@ fun createCommandService(
 fun createCommandService(
     ctx: Context, commandRegistry: ICommandRegistry?
 ): CommandService {
-    val root = ctx.root.getOrNull<CommandService>("command")
+    val root = ctx.root.getOrNull<CommandService>("command", false)
 
     if (root != null) {
         return root.fork(ctx)

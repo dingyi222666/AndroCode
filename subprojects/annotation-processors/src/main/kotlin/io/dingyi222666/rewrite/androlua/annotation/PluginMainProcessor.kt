@@ -21,19 +21,17 @@ class PluginMainProcessor(
     val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private val services = mutableListOf<Pair<String, KSFile?>>()
+    private val services = mutableSetOf<Pair<String, KSFile?>>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(PluginMain::class.qualifiedName ?: "")
 
-        val filtered = symbols
+        symbols
             .filterIsInstance<KSClassDeclaration>()
             .toList()
+            .forEach { it.accept(BuilderVisitor(), Unit) }
 
-        filtered.forEach { it.accept(BuilderVisitor(), Unit) }
-
-
-        return filtered
+        return emptyList()
     }
 
     override fun finish() {

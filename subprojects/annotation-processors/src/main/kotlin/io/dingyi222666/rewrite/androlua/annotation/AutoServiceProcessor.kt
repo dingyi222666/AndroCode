@@ -25,7 +25,7 @@ class AutoServiceProcessor(
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private val services = mutableListOf<AutoServiceInfo>()
+    private val services = mutableSetOf<AutoServiceInfo>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(AutoService::class.qualifiedName ?: "")
@@ -68,7 +68,7 @@ class AutoServiceProcessor(
                     return@forEach
                 }
 
-            if (targetAnnotation.arguments.size != 1) {
+            if (targetAnnotation.arguments.size != 2) {
                 logger.error(
                     "@AutoService annotation has no target service name",
                     function
@@ -80,7 +80,7 @@ class AutoServiceProcessor(
                 (targetAnnotation.arguments[0].value as KSType).toClassName().canonicalName
 
             var serviceFunctionPrefix =
-                function.packageName.getQualifier() + "." + function.containingFile!!.fileName
+                function.packageName.asString() + "." + function.containingFile!!.fileName
                     .replaceFirstChar { it.uppercase() }
                     .replace(".kt", "Kt.")
 
@@ -91,7 +91,7 @@ class AutoServiceProcessor(
 
             if (jvmNameAnnotation != null) {
                 serviceFunctionPrefix =
-                    function.packageName.getQualifier() + "." + jvmNameAnnotation.arguments[0].value.toString() + "."
+                    function.packageName.asString() + "." + jvmNameAnnotation.arguments[0].value.toString() + "."
             }
 
             services.add(
@@ -104,7 +104,7 @@ class AutoServiceProcessor(
             )
         }
 
-        return filtered
+        return emptyList()
     }
 
     override fun finish() {
@@ -137,9 +137,9 @@ class AutoServiceProcessor(
                 ""
             )
 
-            for (info in services) {
-                ServicesFiles.writeServiceFile(services.map { it.serviceFunction }, outputStream)
-            }
+
+            ServicesFiles.writeServiceFile(services.map { it.serviceFunction }, outputStream)
+
 
             outputStream.close()
         }

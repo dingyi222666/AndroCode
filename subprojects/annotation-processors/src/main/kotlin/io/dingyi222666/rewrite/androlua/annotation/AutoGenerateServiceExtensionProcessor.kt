@@ -28,7 +28,7 @@ class AutoGenerateServiceExtensionProcessor(
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private val generatedList = mutableListOf<AutoGenerateServiceExtensionInfo>()
+    private val generatedList = mutableSetOf<AutoGenerateServiceExtensionInfo>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbolsWithAnnotation(

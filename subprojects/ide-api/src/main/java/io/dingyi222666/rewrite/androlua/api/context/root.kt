@@ -11,7 +11,7 @@ open class Context(
 
     private val globalServices = mutableMapOf<String, Service>()
 
-    private val constructors = mutableMapOf<String, ((Context) -> Service)>()
+    private val constructors = mutableMapOf<String, ContextConstructor>()
 
     val root: Context by lazy(LazyThreadSafetyMode.NONE) {
         if (parent == null) {
@@ -54,7 +54,7 @@ open class Context(
 
     fun registerConstructor(
         id: String,
-        constructor: (Context) -> Service
+        constructor: ContextConstructor
     ): IDisposable {
         constructors[id] = constructor
 
@@ -70,7 +70,7 @@ open class Context(
         return service ?: throw IllegalStateException("Service $id not found")
     }
 
-    fun <T : Service> getOrNull(id: String): T? {
+    fun <T : Service> getOrNull(id: String, create: Boolean = true): T? {
         var rawService =
             globalServices[id]
 
@@ -81,7 +81,7 @@ open class Context(
 
         val constructor = constructors[id]
 
-        if (constructor != null) {
+        if (constructor != null && create) {
             rawService = constructor(this)
         }
 
@@ -115,6 +115,8 @@ open class Context(
     }
 }
 
+
+typealias ContextConstructor = (Context) -> Service
 
 inline fun <reified T : Service> Context.getAs(id: String): T {
     val service = get<Service>(id)

@@ -25,9 +25,9 @@ class UIService internal constructor(
     }
 }
 
-@AutoService(AndroLua::class)
+@AutoService(Context::class, "ui")
 @AutoGenerateServiceExtension(Context::class, "ui", "ui")
 fun createUIService(ctx: Context): UIService {
-    return ctx.getOrNull("ui") ?: UIService(ctx)
+    return ctx.getOrNull("ui", false) ?: UIService(ctx)
 }
 
