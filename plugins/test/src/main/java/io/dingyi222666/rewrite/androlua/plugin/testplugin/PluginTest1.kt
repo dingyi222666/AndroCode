@@ -1,11 +1,11 @@
-package io.dingyi222666.rewrite.androlua.plugin.testplugin
+package io.dingyi222666.androcode.plugin.testplugin
 
-import io.dingyi222666.rewrite.androlua.annotation.PluginMain
-import io.dingyi222666.rewrite.androlua.api.context.Context
-import io.dingyi222666.rewrite.androlua.api.log
-import io.dingyi222666.rewrite.androlua.api.plugin.PluginConfig
-import io.dingyi222666.rewrite.androlua.api.plugin.ReWriteAndroLuaPlugin
-import io.dingyi222666.rewrite.androlua.api.plugin.buildPluginConfig
+import io.dingyi222666.androcode.annotation.PluginMain
+import io.dingyi222666.androcode.api.context.Context
+import io.dingyi222666.androcode.api.log
+import io.dingyi222666.androcode.api.plugin.PluginConfig
+import io.dingyi222666.androcode.api.plugin.ReWriteAndroLuaPlugin
+import io.dingyi222666.androcode.api.plugin.buildPluginConfig
 
 @PluginMain
 class PluginTest1 : ReWriteAndroLuaPlugin {

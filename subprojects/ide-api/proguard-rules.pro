@@ -75,11 +75,11 @@
 
 # Keep Serializers
 
--keep,includedescriptorclasses class io.dingyi222666.rewrite.androlua.**$$serializer { *; }  # <-- Change com.company.package
--keep class io.dingyi222666.rewrite.androlua.** {  # <-- Change com.company.package to yours
+-keep,includedescriptorclasses class io.dingyi222666.androcode.**$$serializer { *; }  # <-- Change com.company.package
+-keep class io.dingyi222666.androcode.** {  # <-- Change com.company.package to yours
    *;
 }
--keepclasseswithmembers class io.dingyi222666.rewrite.androlua.** { # <-- Change com.company.package to yours
+-keepclasseswithmembers class io.dingyi222666.androcode.** { # <-- Change com.company.package to yours
     kotlinx.serialization.KSerializer serializer(...);
 }
 

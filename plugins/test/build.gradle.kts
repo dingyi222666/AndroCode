@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "io.dingyi222666.rewrite.androlua.plugin.test"
+    namespace = "io.dingyi222666.androcode.plugin.test"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "io.dingyi222666.rewrite.androlua.plugin.test"
+        applicationId = "io.dingyi222666.androcode.plugin.test"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/subprojects/annotation-processors" />
             <option value="$PROJECT_DIR$/subprojects/ide-annotation" />
             <option value="$PROJECT_DIR$/subprojects/ide-api" />
-            <option value="$PROJECT_DIR$/test" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

@@ -1,4 +1,4 @@
-package io.dingyi222666.rewrite.androlua.plugin.testplugin
+package io.dingyi222666.androcode.plugin.testplugin
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("io.dingyi222666.rewrite.androlua.plugin.testplugin", appContext.packageName)
+        assertEquals("io.dingyi222666.androcode.plugin.testplugin", appContext.packageName)
     }
 }

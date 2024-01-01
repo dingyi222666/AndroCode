@@ -5,13 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "io.dingyi222666.rewrite.androlua"
+    namespace = "io.dingyi222666.androcode"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "io.dingyi222666.rewrite.androlua"
-        minSdk = 26
-        targetSdk = 34
+        applicationId = "io.dingyi222666.androcode"
+        minSdk = 21
+        //noinspection EditedTargetSdkVersion,ExpiredTargetSdkVersion
+        targetSdk = 28
         versionCode = 1
         versionName = "1.0"
 

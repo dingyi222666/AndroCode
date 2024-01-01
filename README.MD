@@ -1,6 +1,10 @@
-## rewrite-androlua
+## androcode
 
-现代化，插件化的 androlua 编辑器。
+中文 | [English](README.EN.md)
+
+---
+
+现代化，插件化的运行在 Android 上的类 VS Code 编辑器。
 
 ### 注意**此项目随时可能烂尾，在未完成之前只供参考学习使用。**
 ---
@@ -9,10 +13,11 @@
 
 - 现代化
 
-    完全 Kotlin API，完美适配协程，使用运行器 API 运行项目，自编写打包实现，完全 Compose 构建的界面。
+    完全 Kotlin API，完美适配协程，使用运行器 API 运行项目，完全 Compose 构建的界面。
 
 - 插件化
 
     全抽象的插件 API，配合 Compose 带来无限可能。
 
     原子化操作，倡导所有操作都能可逆化，低成本卸载与安装插件设计。使插件更加轻量化。
+    

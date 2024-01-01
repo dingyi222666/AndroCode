@@ -1,12 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":test")
-
-
-include(":ide-annotation")
-
-
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 
@@ -32,7 +25,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "rewrite-androlua"
+rootProject.name = "androcode"
 include(":app")
 
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "io.dingyi222666.rewrite.androlua.api"
+    namespace = "io.dingyi222666.androcode.api"
     compileSdk = 34
 
     defaultConfig {

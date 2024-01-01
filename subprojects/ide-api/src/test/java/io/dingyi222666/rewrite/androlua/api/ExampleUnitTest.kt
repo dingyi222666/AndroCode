@@ -1,4 +1,4 @@
-package io.dingyi222666.rewrite.androlua.api
+package io.dingyi222666.androcode.api
 
 import org.junit.Test
 
