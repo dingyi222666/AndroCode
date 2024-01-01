@@ -3,6 +3,7 @@ package io.dingyi222666.rewrite.androlua.ui.page.main
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import io.dingyi222666.rewrite.androlua.api.AndroLua
+import io.dingyi222666.rewrite.androlua.api.navigationBar
 import io.dingyi222666.rewrite.androlua.api.ui
 
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -90,7 +90,7 @@ fun NavigationBar() {
             for (item in navigationBarItems) {
                 val slot = item.slot
                 if (item.id === selectedTag && slot != null) {
-                    slot.slot()
+                    slot.Slot()
                 }
             }
 

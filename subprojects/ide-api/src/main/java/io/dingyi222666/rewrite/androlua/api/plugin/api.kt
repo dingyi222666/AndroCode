@@ -5,6 +5,5 @@ interface ReWriteAndroLuaPlugin {
     fun activate()
 
     fun config(): PluginConfig
-
 }
 

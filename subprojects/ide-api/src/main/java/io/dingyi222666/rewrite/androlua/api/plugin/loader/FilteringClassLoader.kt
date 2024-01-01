@@ -12,23 +12,13 @@ import javax.annotation.Nonnull
  * packages and resources are visible.
  */
 class FilteringClassLoader(parent: ClassLoader?, spec: Spec) : ClassLoader(parent) {
-    private val packageNames: Set<String>
-    private val packagePrefixes: TrieSet
-    private val resourcePrefixes: TrieSet
-    private val resourceNames: Set<String>
-    private val classNames: Set<String>
-    private val disallowedClassNames: Set<String>
-    private val disallowedPackagePrefixes: TrieSet
-
-    init {
-        packageNames = HashSet(spec.packageNames)
-        packagePrefixes = TrieSet(spec.packagePrefixes)
-        resourceNames = HashSet(spec.resourceNames)
-        resourcePrefixes = TrieSet(spec.resourcePrefixes)
-        classNames = HashSet(spec.classNames)
-        disallowedClassNames = HashSet(spec.disallowedClassNames)
-        disallowedPackagePrefixes = TrieSet(spec.disallowedPackagePrefixes)
-    }
+    private val packageNames: Set<String> = HashSet(spec.packageNames)
+    private val packagePrefixes: TrieSet = TrieSet(spec.packagePrefixes)
+    private val resourcePrefixes: TrieSet = TrieSet(spec.resourcePrefixes)
+    private val resourceNames: Set<String> = HashSet(spec.resourceNames)
+    private val classNames: Set<String> = HashSet(spec.classNames)
+    private val disallowedClassNames: Set<String> = HashSet(spec.disallowedClassNames)
+    private val disallowedPackagePrefixes: TrieSet = TrieSet(spec.disallowedPackagePrefixes)
 
 
     @Throws(ClassNotFoundException::class)
@@ -106,7 +96,7 @@ class FilteringClassLoader(parent: ClassLoader?, spec: Spec) : ClassLoader(paren
         }
         return if (disallowedPackagePrefixes.find(className)) {
             false
-        } else packagePrefixes.find(className) || packagePrefixes.contains(DEFAULT_PACKAGE + ".") && isInDefaultPackage(
+        } else packagePrefixes.find(className) || packagePrefixes.contains("$DEFAULT_PACKAGE.") && isInDefaultPackage(
             className
         )
     }

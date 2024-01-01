@@ -2,6 +2,7 @@ package io.dingyi222666.rewrite.androlua.api.context
 
 import androidx.annotation.CallSuper
 import io.dingyi222666.rewrite.androlua.api.common.IDisposable
+import io.dingyi222666.rewrite.androlua.api.configureBase
 import io.dingyi222666.rewrite.androlua.api.disposer
 
 open class Context(
@@ -9,9 +10,9 @@ open class Context(
     val parent: Context? = null
 ) : IDisposable {
 
-    private val globalServices = mutableMapOf<String, Service>()
+    private val globalServices: MutableMap<String, Service> = mutableMapOf()
 
-    private val constructors = mutableMapOf<String, ContextConstructor>()
+    private val constructors: MutableMap<String, ContextConstructor> = mutableMapOf()
 
     val root: Context by lazy(LazyThreadSafetyMode.NONE) {
         if (parent == null) {
@@ -91,9 +92,13 @@ open class Context(
         }
 
         val parent = parent
-        if (parent != null) {
-            return parent.get(id) as T
+
+        val result = parent?.getOrNull<T>(id)
+
+        if (result != null) {
+            return result
         }
+
 
         return null
     }

@@ -8,7 +8,6 @@ import io.dingyi222666.rewrite.androlua.api.context.Service
 
 
 object AndroLua : Context("root") {
-
     init {
         configureBase()
     }
@@ -44,9 +43,7 @@ fun Context.readServiceClasses(targetClassName: String, classLoader: ClassLoader
             }
 
             val annotation = method.getAnnotation(AutoService::class.java) ?: return@runCatching
-
-            Log.i("register", "registering $className")
-
+            println(annotation)
             registerConstructor(annotation.id) { ctx ->
                 method.invoke(null, ctx) as Service
             }

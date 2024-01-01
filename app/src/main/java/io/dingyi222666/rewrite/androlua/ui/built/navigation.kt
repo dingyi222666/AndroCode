@@ -8,6 +8,7 @@ import androidx.compose.material.icons.twotone.Folder
 import androidx.compose.material.icons.twotone.MyLocation
 import io.dingyi222666.rewrite.androlua.MainActivity
 import io.dingyi222666.rewrite.androlua.api.AndroLua
+import io.dingyi222666.rewrite.androlua.api.navigationBar
 import io.dingyi222666.rewrite.androlua.api.ui
 import io.dingyi222666.rewrite.androlua.ui.page.main.MainViewModel
 
