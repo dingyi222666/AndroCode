@@ -38,7 +38,7 @@ android {
 
 dependencies {
     compileOnly(projects.ideApi)
-    compileOnly(projects.ideAnnotation)
+    implementation(projects.ideAnnotation)
     ksp(projects.annotationProcessors)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
