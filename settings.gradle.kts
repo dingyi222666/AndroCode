@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":test")
+
+
 include(":ide-annotation")
 
 
@@ -32,7 +35,7 @@ dependencyResolutionManagement {
 rootProject.name = "rewrite-androlua"
 include(":app")
 
-//foreach platform
+
 file("subprojects").listFiles()
     ?.forEach {
         val name = it.name
@@ -40,3 +43,11 @@ file("subprojects").listFiles()
         project(":$name").projectDir = it
 
     }
+
+file("plugins").listFiles()
+    ?.forEach {
+        val name = it.name
+        include("plugin-$name")
+        project(":plugin-$name").projectDir = it
+    }
+

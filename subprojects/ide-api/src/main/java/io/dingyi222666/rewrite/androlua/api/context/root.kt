@@ -113,6 +113,10 @@ open class Context(
         }
     }
 
+    fun fork(id: String): Context {
+        return Context(id, this)
+    }
+
     override fun dispose() {
         disposer.disposeChild(this)
         globalServices.clear()
