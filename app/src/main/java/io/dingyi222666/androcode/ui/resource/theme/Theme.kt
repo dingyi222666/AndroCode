@@ -77,7 +77,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun ReWriteAndroLuaTheme(
+fun AndroCodeTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {

@@ -9,7 +9,7 @@ import io.dingyi222666.androcode.ui.page.main.MainPage
 import io.dingyi222666.androcode.ui.resource.LocalNavController
 
 sealed class Page(val route: String) {
-    object Home : Page("home_page")
+    data object Home : Page("home_page")
 }
 
 @Composable

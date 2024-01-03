@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">rewrite-android</string>
+    <string name="app_name">AndroCode</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
 </resources>

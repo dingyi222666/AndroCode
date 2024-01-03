@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import io.dingyi222666.androcode.ui.built.navigation
 import io.dingyi222666.androcode.ui.page.NavGraph
 import io.dingyi222666.androcode.ui.resource.LocalWindowSizeClass
-import io.dingyi222666.androcode.ui.resource.theme.ReWriteAndroLuaTheme
+import io.dingyi222666.androcode.ui.resource.theme.AndroCodeTheme
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalWindowSizeClass provides sizeClass
             ) {
-                ReWriteAndroLuaTheme {
+                AndroCodeTheme {
                     NavGraph()
                 }
             }

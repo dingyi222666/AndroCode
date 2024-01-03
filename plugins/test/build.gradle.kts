@@ -11,7 +11,8 @@ android {
     defaultConfig {
         applicationId = "io.dingyi222666.androcode.plugin.test"
         minSdk = 26
-        targetSdk = 34
+        //noinspection EditedTargetSdkVersion,ExpiredTargetSdkVersion
+        targetSdk = 28
         versionCode = 1
         versionName = "1.0"
 
