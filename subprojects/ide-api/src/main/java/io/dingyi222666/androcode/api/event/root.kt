@@ -3,6 +3,7 @@ package io.dingyi222666.androcode.api.event
 import com.google.common.collect.HashMultimap
 import io.dingyi222666.androcode.api.Androcode
 import io.dingyi222666.androcode.api.common.IDisposable
+import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.coroutine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,7 +21,8 @@ fun interface EventListener<E : Event> {
 
 
 open class EventEmitter(
-    private val parent: EventEmitter? = null
+    private val parent: EventEmitter? = null,
+    private val ctx: Context,
 ) : IDisposable {
 
     private val root: EventEmitter = parent?.root ?: this
@@ -86,7 +88,7 @@ open class EventEmitter(
         }
 
         return IDisposable {
-            Androcode.coroutine.launchOnMain {
+            ctx.root.coroutine.launchOnMain {
                 off(clazz, listener)
             }
         }

@@ -15,9 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.Build
-import androidx.compose.material.icons.twotone.Folder
-import androidx.compose.material.icons.twotone.MyLocation
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -73,7 +70,7 @@ fun NavigationBar() {
         ) {
 
             LazyColumn {
-                items(navigationBarItems, { it.id }) { item ->
+                items(navigationBarItems) { item ->
                     SelectionImageButton(
                         modifier = Modifier.padding(4.dp),
                         image = item.icon,
@@ -90,7 +87,7 @@ fun NavigationBar() {
             for (item in navigationBarItems) {
                 val slot = item.slot
                 if (item.id === selectedTag && slot != null) {
-                    slot.Slot()
+                    slot.slot?.invoke()
                 }
             }
 

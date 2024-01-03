@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
+import io.dingyi222666.androcode.api.Androcode
 import io.dingyi222666.androcode.ui.built.navigation
 import io.dingyi222666.androcode.ui.page.NavGraph
 import io.dingyi222666.androcode.ui.resource.LocalWindowSizeClass
@@ -31,6 +32,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Androcode
     }
 }
 

@@ -69,11 +69,11 @@ class NavigationBarService internal constructor(
 }
 
 interface NavigationBarSlot {
-    @Composable
-    fun Panel()
 
-    @Composable
-    fun Slot()
+    val panel: (@Composable () -> Unit)?
+
+
+    val slot: (@Composable () -> Unit)?
 }
 
 data class NavigationBarItemImpl(

@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.Default" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.AppSplashScreen" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

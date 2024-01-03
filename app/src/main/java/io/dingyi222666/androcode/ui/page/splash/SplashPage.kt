@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,8 +37,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dingyi222666.androcode.R
 import io.dingyi222666.androcode.ui.resource.theme.AndroCodeTheme
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,8 +76,8 @@ fun SplashPage() {
             Image(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .height(160.dp)
-                    .width(160.dp)
+                    .height(144.dp)
+                    .width(144.dp)
                     .clip(RoundedCornerShape(84.dp))
                     .align(Alignment.CenterHorizontally),
                 bitmap = iconBitmap.asImageBitmap(),
@@ -85,8 +88,8 @@ fun SplashPage() {
                 modifier = Modifier
                     .fillMaxWidth(0.75f)
                     .offset(
-                        y = 70.dp,
-                    /*    bottom = 0.dp,
+                        y = 120.dp,
+                        /*    bottom = 0.dp,
                         start = 0.dp,
                         end = 0.dp*/
                     )
@@ -100,11 +103,19 @@ fun SplashPage() {
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
-                    .offset(y = 160.dp)
+                    .offset(y = 180.dp)
                     .align(Alignment.CenterHorizontally)
             )
 
         }
+    }
+
+
+    val viewModel = viewModel<SplashViewModel>()
+
+    LaunchedEffect(Unit) {
+        delay(3000)
+        viewModel.finishSplash()
     }
 }
 

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.0-alpha01"
+agp = "8.4.0-alpha02"
 kotlin = "2.0.0-Beta1"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -20,7 +20,6 @@ error_prone_annotations = "2.18.0"
 guava =  "32.1.2-android"
 ksp = "2.0.0-Beta1-1.0.15"
 kotlin-poet = "1.15.3"
-composeBomVersion = "2023.08.00"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,7 +52,6 @@ google-guava =  { group = "com.google.guava", name = "guava", version.ref = "gua
 kotlin-ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 square-kotlin-poet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlin-poet" }
 square-kotlin-poet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlin-poet" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
