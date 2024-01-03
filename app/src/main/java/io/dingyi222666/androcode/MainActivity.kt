@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        MainApplication.instance.initIDEContext()
+
         // TODO: move to built plugin
         navigation(this)
 

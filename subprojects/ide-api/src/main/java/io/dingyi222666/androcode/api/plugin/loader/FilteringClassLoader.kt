@@ -11,7 +11,12 @@ import javax.annotation.Nonnull
  * A ClassLoader which hides all non-system classes, packages and resources. Allows certain non-system packages and classes to be declared as visible. By default, only the Java system classes,
  * packages and resources are visible.
  */
-class FilteringClassLoader(parent: ClassLoader?, spec: Spec) : ClassLoader(parent) {
+class FilteringClassLoader(
+    parent: ClassLoader?,
+    // make plugin id
+    internal val pluginId: String,
+    spec: Spec,
+) : ClassLoader(parent) {
     private val packageNames: Set<String> = HashSet(spec.packageNames)
     private val packagePrefixes: TrieSet = TrieSet(spec.packagePrefixes)
     private val resourcePrefixes: TrieSet = TrieSet(spec.resourcePrefixes)
@@ -233,7 +238,6 @@ class FilteringClassLoader(parent: ClassLoader?, spec: Spec) : ClassLoader(paren
                     xor disallowedClassNames.hashCode()
                     xor disallowedPackagePrefixes.hashCode())
         }
-
 
 
         companion object {

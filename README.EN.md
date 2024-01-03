@@ -1,4 +1,4 @@
-# androcode
+# AndroCode
 
 [中文](README.MD) | English
 
@@ -6,7 +6,7 @@
 
 A modern, plugin-based VS Code-like editor running on Android.
 
-### Note **This project may be abandoned at any time, and it is only for reference and learning purposes before it is completed.**
+### Note: **This project may be abandoned at any time, and it is only for reference and learning purposes before it is completed.**
 
 ---
 

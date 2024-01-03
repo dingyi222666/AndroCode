@@ -60,6 +60,8 @@ android {
     }
 }
 
+logger.lifecycle("Configure project ${project.name}")
+
 dependencies {
     implementation(projects.ideApi)
     implementation(libs.google.errorprone.annotations)
@@ -80,7 +82,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.compose.material.icons.extended)
-   // implementation(libs.androidx.core.splashscreen)
+    // implementation(libs.androidx.core.splashscreen)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -8,8 +8,9 @@ import androidx.compose.material.icons.twotone.Folder
 import androidx.compose.material.icons.twotone.MyLocation
 import io.dingyi222666.androcode.MainActivity
 import io.dingyi222666.androcode.MainApplication
-import io.dingyi222666.androcode.api.navigationBar
-import io.dingyi222666.androcode.api.ui
+import io.dingyi222666.androcode.api.ui.navigationBar
+import io.dingyi222666.androcode.api.ui.ui
+
 import io.dingyi222666.androcode.ui.page.main.MainViewModel
 
 fun navigation(activity: MainActivity) {

@@ -4,9 +4,9 @@ package io.dingyi222666.androcode.api.command
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.androcode.annotation.AutoService
 import io.dingyi222666.androcode.api.common.IDisposable
+import io.dingyi222666.androcode.api.common.disposer
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
-import io.dingyi222666.androcode.api.disposer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

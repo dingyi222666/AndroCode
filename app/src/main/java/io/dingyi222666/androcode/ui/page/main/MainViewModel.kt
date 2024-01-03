@@ -3,8 +3,8 @@ package io.dingyi222666.androcode.ui.page.main
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import io.dingyi222666.androcode.MainApplication
-import io.dingyi222666.androcode.api.navigationBar
-import io.dingyi222666.androcode.api.ui
+import io.dingyi222666.androcode.api.ui.navigationBar
+import io.dingyi222666.androcode.api.ui.ui
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

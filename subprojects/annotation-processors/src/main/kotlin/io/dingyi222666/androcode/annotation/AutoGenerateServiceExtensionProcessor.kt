@@ -117,19 +117,20 @@ class AutoGenerateServiceExtensionProcessor(
             return
         }
 
-        generatedList.groupBy {
-            it.targetServiceName
-        }.forEach { it ->
+        generatedList
+            .groupBy {
+                it.serviceFile
+            }.forEach { it ->
 
-            val services = it.value
-            val first = it.value.first()
+                val services = it.value
+                val first = it.value.first()
 
-            val packageName = first.serviceFile.packageName.getQualifier()
-            val className = first.serviceFile.fileName.replace(".kt", "ServiceExtensions")
+                val packageName = first.serviceFile.packageName.asString()
+                val className = first.serviceFile.fileName.replace(".kt", "ServiceExtensions")
 
-            generateKotlinFile(packageName, className, codeGenerator, services)
+                generateKotlinFile(packageName, className, codeGenerator, services)
 
-        }
+            }
 
     }
 

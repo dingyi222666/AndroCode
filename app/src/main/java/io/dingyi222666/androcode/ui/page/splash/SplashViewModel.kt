@@ -20,11 +20,7 @@ class SplashViewModel : ViewModel() {
     }
 
     fun finishSplash() {
-        /* _splashStatus.update {
-             true
-         }*/
         _splashStatus.value = true
     }
-
 
 }

@@ -111,12 +111,6 @@ fun SplashPage() {
     }
 
 
-    val viewModel = viewModel<SplashViewModel>()
-
-    LaunchedEffect(Unit) {
-        delay(3000)
-        viewModel.finishSplash()
-    }
 }
 
 @Preview(showBackground = true)

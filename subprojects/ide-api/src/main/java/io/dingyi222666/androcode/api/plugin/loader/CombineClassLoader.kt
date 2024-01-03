@@ -11,7 +11,7 @@ package io.dingyi222666.androcode.api.plugin.loader
 class CombineClassLoader(classLoaders: Array<out ClassLoader>, parent: ClassLoader) :
     ClassLoader(parent) {
 
-    private val classLoaders = classLoaders.toMutableList()
+    internal val classLoaders = classLoaders.toMutableList()
 
     internal fun addClassLoader(classLoader: ClassLoader) {
         classLoaders.add(classLoader)
