@@ -40,7 +40,7 @@ class Disposer(
         while (disposableStack.isNotEmpty()) {
             val disposable = disposableStack.removeLast()
 
-            if (disposable != parent) {
+            if (disposable != parent && disposable != this && !disposableList.contains(disposable)) {
                 disposableList.add(disposable)
             }
 

@@ -6,12 +6,11 @@ import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
 
 
-object Androcode : Context("root") {
+class AndroCodeContext : Context("root") {
     init {
         configureBase()
     }
 }
-
 
 fun Context.readServiceClasses(targetClassName: String, classLoader: ClassLoader) {
     val path = "META-INF/services/$targetClassName"

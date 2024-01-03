@@ -22,9 +22,10 @@
         android:requestLegacyExternalStorage="true"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-
+        android:name=".MainApplication"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Default">
+        android:theme="@style/Theme.Default"
+        tools:targetApi="s">
         <activity
             android:name=".SplashActivity"
             android:exported="true"

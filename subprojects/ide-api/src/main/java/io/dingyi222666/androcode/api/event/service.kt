@@ -8,7 +8,7 @@ import io.dingyi222666.androcode.api.context.Service
 class EventService internal constructor(
     override val ctx: Context,
     parent: EventEmitter? = null
-) : EventEmitter(parent), Service {
+) : EventEmitter(parent,ctx), Service {
 
     override val id = "event"
 

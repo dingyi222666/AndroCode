@@ -41,13 +41,13 @@ open class Context(
         }
     }
 
-    fun register(service: Service): IDisposable {
-        globalServices[service.id] = service
+    fun register(service: Service, id: String = service.id): IDisposable {
+        globalServices[id] = service
 
         disposer.register(service, this)
 
         return IDisposable {
-            removeInstance(service.id)
+            removeInstance(id)
             service.dispose()
         }
     }
@@ -86,7 +86,8 @@ open class Context(
         }
 
         if (rawService != null) {
-            globalServices[id] = rawService
+            // globalServices[id] = rawService
+            register(rawService, id)
             return rawService as T
         }
 

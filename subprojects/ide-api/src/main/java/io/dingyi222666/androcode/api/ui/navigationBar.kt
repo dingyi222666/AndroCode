@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.androcode.annotation.AutoService
-import io.dingyi222666.androcode.api.Androcode
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
 import io.dingyi222666.androcode.api.coroutine
@@ -58,13 +57,18 @@ class NavigationBarService internal constructor(
     }
 
     private fun updateFlow() {
-        val coroutineService = Androcode.coroutine
+        val coroutineService = ctx.coroutine
 
         coroutineService.rootCoroutine.launch {
             _navigationBarItemFlow.emit(
                 navigationBarItemList.toList()
             )
         }
+    }
+
+    override fun dispose() {
+        super.dispose()
+        navigationBarItemList.clear()
     }
 }
 

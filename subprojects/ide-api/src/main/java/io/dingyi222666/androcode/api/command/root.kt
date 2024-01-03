@@ -3,7 +3,6 @@ package io.dingyi222666.androcode.api.command
 
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.androcode.annotation.AutoService
-import io.dingyi222666.androcode.api.Androcode
 import io.dingyi222666.androcode.api.common.IDisposable
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
@@ -28,7 +27,7 @@ interface ICommandRegistry {
 }
 
 internal class CommandRegistry(
-    private val ctx: Context = Androcode
+    private val ctx: Context
 ) : ICommandRegistry {
 
     private val commands = mutableMapOf<String, ICommand>()

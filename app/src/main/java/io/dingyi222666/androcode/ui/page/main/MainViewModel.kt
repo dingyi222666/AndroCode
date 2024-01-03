@@ -2,7 +2,7 @@ package io.dingyi222666.androcode.ui.page.main
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
-import io.dingyi222666.androcode.api.Androcode
+import io.dingyi222666.androcode.MainApplication
 import io.dingyi222666.androcode.api.navigationBar
 import io.dingyi222666.androcode.api.ui
 
@@ -18,9 +18,9 @@ class MainViewModel : ViewModel() {
     private val _drawerShouldBeOpened = MutableStateFlow(false)
     val drawerShouldBeOpened = _drawerShouldBeOpened.asStateFlow()
 
-    val navigationBarItemList = Androcode.ui.navigationBar.navigationBarItemFlow
+    val navigationBarItemList = MainApplication.instance.androCode.ui.navigationBar.navigationBarItemFlow
 
-    val _snackbarHostState = MutableStateFlow(SnackbarHostState())
+    private val _snackbarHostState = MutableStateFlow(SnackbarHostState())
     val snackbarHostState = _snackbarHostState.asStateFlow()
 
     fun openDrawer() {

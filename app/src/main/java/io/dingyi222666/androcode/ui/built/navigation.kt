@@ -7,7 +7,7 @@ import androidx.compose.material.icons.twotone.Build
 import androidx.compose.material.icons.twotone.Folder
 import androidx.compose.material.icons.twotone.MyLocation
 import io.dingyi222666.androcode.MainActivity
-import io.dingyi222666.androcode.api.Androcode
+import io.dingyi222666.androcode.MainApplication
 import io.dingyi222666.androcode.api.navigationBar
 import io.dingyi222666.androcode.api.ui
 import io.dingyi222666.androcode.ui.page.main.MainViewModel
@@ -22,8 +22,9 @@ fun navigation(activity: MainActivity) {
 
     val viewModel by activity.viewModels<MainViewModel>()
 
+    val androCode = MainApplication.instance.androCode
 
-    Androcode.ui.navigationBar.registerItem(
+    androCode.ui.navigationBar.registerItem(
         id = "file_explorer",
         icon = Icons.TwoTone.Folder,
         description = "文件浏览器",
@@ -32,7 +33,7 @@ fun navigation(activity: MainActivity) {
         }
     )
 
-    Androcode.ui.navigationBar.registerItem(
+    androCode.ui.navigationBar.registerItem(
         id = "file2_explorer",
         icon = Icons.TwoTone.MyLocation,
         description = "导航",
@@ -41,7 +42,7 @@ fun navigation(activity: MainActivity) {
         }
     )
 
-    Androcode.ui.navigationBar.registerItem(
+    androCode.ui.navigationBar.registerItem(
         id = "file3_explorer",
         icon = Icons.TwoTone.Build,
         description = "打包",

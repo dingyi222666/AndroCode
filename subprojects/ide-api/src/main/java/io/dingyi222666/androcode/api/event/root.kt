@@ -1,7 +1,6 @@
 package io.dingyi222666.androcode.api.event
 
 import com.google.common.collect.HashMultimap
-import io.dingyi222666.androcode.api.Androcode
 import io.dingyi222666.androcode.api.common.IDisposable
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.coroutine
