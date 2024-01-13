@@ -10,7 +10,7 @@ class Logger(
         val level = context.level
         val formatter = context.formatter
         if (level.ordinal >= LogLevel.INFO.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.info(tag, formatter.format(tag, msg))
             }
         }
@@ -21,7 +21,7 @@ class Logger(
         val level = context.level
         val formatter = context.formatter
         if (level.ordinal >= LogLevel.INFO.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.info(tag, formatter.format(tag, msg), throwable)
             }
         }
@@ -32,7 +32,7 @@ class Logger(
         val formatter = context.formatter
 
         if (level.ordinal >= LogLevel.DEBUG.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.debug(tag, formatter.format(tag, msg))
             }
         }
@@ -41,7 +41,7 @@ class Logger(
     override fun debug(msg: String, throwable: Throwable) {
 
         if (context.level.ordinal >= LogLevel.DEBUG.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.debug(tag, context.formatter.format(tag, msg), throwable)
             }
         }
@@ -49,7 +49,7 @@ class Logger(
 
     override fun warn(msg: String) {
         if (context.level.ordinal >= LogLevel.WARN.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.warn(tag, context.formatter.format(tag, msg))
             }
         }
@@ -57,7 +57,7 @@ class Logger(
 
     override fun warn(msg: String, throwable: Throwable) {
         if (context.level.ordinal >= LogLevel.WARN.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.warn(tag, context.formatter.format(tag, msg), throwable)
             }
         }
@@ -65,7 +65,7 @@ class Logger(
 
     override fun error(msg: String) {
         if (context.level.ordinal >= LogLevel.ERROR.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.error(tag, context.formatter.format(tag, msg))
             }
         }
@@ -73,7 +73,7 @@ class Logger(
 
     override fun error(msg: String, throwable: Throwable) {
         if (context.level.ordinal >= LogLevel.ERROR.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.error(tag, context.formatter.format(tag, msg), throwable)
             }
         }
@@ -81,7 +81,7 @@ class Logger(
 
     override fun fatal(msg: String) {
         if (context.level.ordinal >= LogLevel.FATAL.ordinal) {
-            context.readBackends.forEach {
+            context.loggerBackends.forEach {
                 it.fatal(tag, context.formatter.format(tag, msg))
             }
         }

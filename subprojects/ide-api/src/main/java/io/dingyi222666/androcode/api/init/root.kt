@@ -20,7 +20,7 @@ class InitService(override val ctx: Context) : Service {
 
     private var isInit = false
 
-    suspend fun init(androidContext: ComponentActivity, statusFlow: MutableSharedFlow<InitStatus>) {
+    suspend fun start(androidContext: ComponentActivity, statusFlow: MutableSharedFlow<InitStatus>) {
 
         if (isInit) {
             throw IllegalStateException("The init service has been initialized")

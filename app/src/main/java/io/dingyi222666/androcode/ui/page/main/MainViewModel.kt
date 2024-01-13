@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     private val _drawerShouldBeOpened = MutableStateFlow(false)
     val drawerShouldBeOpened = _drawerShouldBeOpened.asStateFlow()
 
-    val navigationBarItemList = MainApplication.instance.androCode.ui.navigationBar.navigationBarItemFlow
+    val navigationBarItemList = MainApplication.instance.ctx.ui.navigationBar.navigationBarItemFlow
 
     private val _snackbarHostState = MutableStateFlow(SnackbarHostState())
     val snackbarHostState = _snackbarHostState.asStateFlow()

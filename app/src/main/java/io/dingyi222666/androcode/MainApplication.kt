@@ -5,7 +5,7 @@ import io.dingyi222666.androcode.api.AndroCodeContext
 
 class MainApplication : Application() {
 
-    lateinit var androCode: AndroCodeContext
+    lateinit var ctx: AndroCodeContext
         private set
 
     override fun onCreate() {
@@ -14,7 +14,7 @@ class MainApplication : Application() {
     }
 
     fun initIDEContext() {
-        androCode = AndroCodeContext()
+        ctx = AndroCodeContext()
     }
 
 

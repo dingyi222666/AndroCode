@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        MainApplication.instance.androCode.dispose()
+        MainApplication.instance.ctx.dispose()
     }
 }
 

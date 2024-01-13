@@ -23,7 +23,7 @@ fun navigation(activity: MainActivity) {
 
     val viewModel by activity.viewModels<MainViewModel>()
 
-    val androCode = MainApplication.instance.androCode
+     val androCode = MainApplication.instance.ctx
 
     androCode.ui.navigationBar.registerItem(
         id = "file_explorer",

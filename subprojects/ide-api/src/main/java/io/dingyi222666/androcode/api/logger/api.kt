@@ -103,7 +103,7 @@ class LoggerContext {
         LoggerBackend.AndroidDefault
     )
 
-    val readBackends: List<LoggerBackend> = backends
+    val loggerBackends: List<LoggerBackend> = backends
 
     var level: LogLevel = LogLevel.INFO
 

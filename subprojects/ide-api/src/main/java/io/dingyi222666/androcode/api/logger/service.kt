@@ -61,6 +61,7 @@ class LogService(
     }
 
     override fun dispose() {
+        super.dispose()
         loggerContext.clear()
     }
 }
