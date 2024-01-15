@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlinKsp)
 }
 
 android {
@@ -64,6 +65,8 @@ logger.lifecycle("Configure project ${project.name}")
 
 dependencies {
     implementation(projects.ideApi)
+    implementation(projects.ideAnnotation)
+    ksp(projects.annotationProcessors)
     implementation(libs.google.errorprone.annotations)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.core.ktx)

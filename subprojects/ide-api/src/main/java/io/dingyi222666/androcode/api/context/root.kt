@@ -3,6 +3,10 @@ package io.dingyi222666.androcode.api.context
 import androidx.annotation.CallSuper
 import io.dingyi222666.androcode.api.common.IDisposable
 import io.dingyi222666.androcode.api.common.disposer
+import io.dingyi222666.androcode.api.coroutine
+import io.dingyi222666.androcode.api.event.Event
+import io.dingyi222666.androcode.api.event.EventService
+import io.dingyi222666.androcode.api.event.event
 
 
 open class Context(
@@ -114,15 +118,40 @@ open class Context(
         }
     }
 
+    suspend fun start() {
+        event.emit(
+            ContextLifecycleEvent(
+                ContextLifecycleEventType.STARTED,
+                this@Context
+            )
+        )
+    }
+
     fun fork(id: String): Context {
         return Context(id, this)
     }
 
-    override fun dispose() {
-        disposer.disposeChild(this)
+    suspend internal fun disposeAsync() {
+        event.emit(
+            ContextLifecycleEvent(
+                ContextLifecycleEventType.DISPOSED,
+                this@Context
+
+            )
+        )
+
+        disposer.disposeChild(this@Context)
         globalServices.clear()
         constructors.clear()
     }
+
+    override fun dispose() {
+        this.coroutine.launchOnMain {
+            disposeAsync()
+        }
+    }
+
+
 }
 
 
@@ -152,4 +181,17 @@ interface Service : IDisposable {
         // override this method if you need to fork
         return this
     }
+}
+
+data class ContextLifecycleEvent(
+    val type: ContextLifecycleEventType,
+    val context: Context
+) : Event
+
+enum class ContextLifecycleEventType {
+    STARTED,
+    DISPOSED,
+    /* PAUSE,
+     RESTART,
+     RESUME,*/
 }

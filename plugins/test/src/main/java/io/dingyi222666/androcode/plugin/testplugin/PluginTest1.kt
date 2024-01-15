@@ -1,29 +1,27 @@
 package io.dingyi222666.androcode.plugin.testplugin
 
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
-import io.dingyi222666.androcode.annotation.AutoService
 import io.dingyi222666.androcode.annotation.PluginMain
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
 import io.dingyi222666.androcode.api.logger.log
 
-import io.dingyi222666.androcode.api.plugin.PluginConfig
-import io.dingyi222666.androcode.api.plugin.ReWriteAndroLuaPlugin
+import io.dingyi222666.androcode.api.plugin.AndroCodePlugin
 import io.dingyi222666.androcode.api.plugin.buildPluginConfig
 
 
 @PluginMain
-class PluginTest1 : ReWriteAndroLuaPlugin {
+class PluginTest1 : AndroCodePlugin {
     override suspend fun activate(ctx: Context) {
         ctx.log.current.info("load plugin test1")
         ctx.root.registerConstructor("serviceTest1", ::createServiceTest1)
     }
 
     override fun config() = buildPluginConfig {
-        id = "com.plugin.test1"
+        packageName = "com.plugin.test1"
         displayName = "test1"
         version = "1.0.0"
-        apiDependencyVersion = 1
+        sdkVersion = 1
         activationEvents {
             event("onLanguage:kotlin")
         }
@@ -49,23 +47,23 @@ fun createServiceTest1(ctx: Context): ServiceTest1 {
 }
 
 @PluginMain
-class PluginTest2 : ReWriteAndroLuaPlugin {
+class PluginTest2 : AndroCodePlugin {
     override suspend fun activate(ctx: Context) {
         ctx.log.current.info("load plugin test2")
         ctx.log.current.warn(ctx.serviceTest1.format("test servive test1", 10))
     }
 
     override fun config() = buildPluginConfig {
-        id = "com.plugin.test2"
+        packageName = "com.plugin.test2"
         displayName = "test2"
         version = "1.0.0"
-        apiDependencyVersion = 1
+        sdkVersion = 1
         activationEvents {
             event("onLanguage:kotlin")
         }
-        dependencyPlugins {
+        dependencies {
             // plugin("com.plugin.test1", "1.0.+")
-            plugin("com.plugin.test1", "2.0")
+            plugin("com.plugin.test1:2.0")
         }
     }
 }

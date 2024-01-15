@@ -14,16 +14,16 @@ import javax.annotation.Nonnull
 class FilteringClassLoader(
     parent: ClassLoader?,
     // make plugin id
-    internal val pluginId: String,
-    spec: Spec,
+    internal var pluginId: String,
+    internal val spec: Spec,
 ) : ClassLoader(parent) {
-    private val packageNames: Set<String> = HashSet(spec.packageNames)
-    private val packagePrefixes: TrieSet = TrieSet(spec.packagePrefixes)
-    private val resourcePrefixes: TrieSet = TrieSet(spec.resourcePrefixes)
-    private val resourceNames: Set<String> = HashSet(spec.resourceNames)
-    private val classNames: Set<String> = HashSet(spec.classNames)
-    private val disallowedClassNames: Set<String> = HashSet(spec.disallowedClassNames)
-    private val disallowedPackagePrefixes: TrieSet = TrieSet(spec.disallowedPackagePrefixes)
+    private var packageNames: MutableSet<String> = HashSet(spec.packageNames)
+    private var resourcePrefixes: TrieSet = TrieSet(spec.resourcePrefixes)
+    private var resourceNames: MutableSet<String> = HashSet(spec.resourceNames)
+    private var classNames: MutableSet<String> = HashSet(spec.classNames)
+    private var disallowedClassNames: MutableSet<String> = HashSet(spec.disallowedClassNames)
+    private var disallowedPackagePrefixes: TrieSet = TrieSet(spec.disallowedPackagePrefixes)
+    private var packagePrefixes: TrieSet = TrieSet(spec.packagePrefixes)
 
 
     @Throws(ClassNotFoundException::class)
@@ -110,6 +110,17 @@ class FilteringClassLoader(
         return !className.contains(".")
     }
 
+    internal fun refreshSpec() {
+        packageNames = HashSet(spec.packageNames)
+        resourcePrefixes = TrieSet(spec.resourcePrefixes)
+        resourceNames = HashSet(spec.resourceNames)
+        classNames = HashSet(spec.classNames)
+        disallowedClassNames = HashSet(spec.disallowedClassNames)
+        disallowedPackagePrefixes = TrieSet(spec.disallowedPackagePrefixes)
+        packagePrefixes = TrieSet(spec.packagePrefixes)
+
+    }
+
     class Spec {
         val packageNames: MutableSet<String> = HashSet()
         val packagePrefixes: MutableSet<String> = HashSet()
@@ -139,13 +150,13 @@ class FilteringClassLoader(
             disallowedClassNames: Iterable<String>,
             disallowedPackagePrefixes: Iterable<String>
         ) {
-            addAll(this.classNames, classNames)
-            addAll(this.packageNames, packageNames)
-            addAll(this.packagePrefixes, packagePrefixes)
-            addAll(this.resourcePrefixes, resourcePrefixes)
-            addAll(this.resourceNames, resourceNames)
-            addAll(this.disallowedClassNames, disallowedClassNames)
-            addAll(this.disallowedPackagePrefixes, disallowedPackagePrefixes)
+            this.classNames.addAll(classNames)
+            this.packageNames.addAll(packageNames)
+            this.packagePrefixes.addAll(packagePrefixes)
+            this.resourcePrefixes.addAll(resourcePrefixes)
+            this.resourceNames.addAll(resourceNames)
+            this.disallowedClassNames.addAll(disallowedClassNames)
+            this.disallowedPackagePrefixes.addAll(disallowedPackagePrefixes)
         }
 
         val isEmpty: Boolean
@@ -173,6 +184,18 @@ class FilteringClassLoader(
             resourcePrefixes.add(packageName.replace('.', '/') + '/')
         }
 
+        fun allowAllPackage() {
+            packageNames.add(".")
+            packagePrefixes.add(".")
+            resourcePrefixes.add("/")
+        }
+
+        fun disableAllPackage() {
+            packageNames.remove(".")
+            packagePrefixes.remove(".")
+            resourcePrefixes.remove("/")
+        }
+
         /**
          * Marks a single class as visible.
          *
@@ -180,6 +203,15 @@ class FilteringClassLoader(
          */
         fun allowClass(clazz: Class<*>) {
             classNames.add(clazz.getName())
+        }
+
+        /**
+         * Marks a single class as visible.
+         *
+         * @param clazz the class
+         */
+        fun allowClass(className: String) {
+            classNames.add(className)
         }
 
         /**
@@ -198,6 +230,9 @@ class FilteringClassLoader(
          */
         fun disallowPackage(packagePrefix: String) {
             disallowedPackagePrefixes.add("$packagePrefix.")
+            packageNames.remove(packagePrefix)
+            packagePrefixes.remove("$packagePrefix.")
+            resourcePrefixes.remove(packagePrefix.replace('.', '/') + '/')
         }
 
         /**
@@ -240,13 +275,6 @@ class FilteringClassLoader(
         }
 
 
-        companion object {
-            private fun addAll(collection: MutableCollection<String>, elements: Iterable<String>) {
-                for (element in elements) {
-                    collection.add(element)
-                }
-            }
-        }
     }
 
 
@@ -260,7 +288,7 @@ class FilteringClassLoader(
 
             SYSTEM_PACKAGES.add("io.dingyi222666.androcode.api.plugin")
             SYSTEM_PACKAGES.add("kotlin")
-            SYSTEM_PACKAGES.add("android")
+            SYSTEM_PACKAGES.add("java.lang")
 
             try {
                 registerAsParallelCapable()
@@ -273,13 +301,8 @@ class FilteringClassLoader(
 
     private class TrieSet(words: Collection<String>) :
         Iterable<String> {
-        private val trie: Trie
-        private val set: Set<String>
-
-        init {
-            trie = Trie.from(words)
-            set = HashSet(words)
-        }
+        private val trie: Trie = Trie.from(words)
+        private val set: HashSet<String> = HashSet(words)
 
         fun find(seq: CharSequence): Boolean {
             return trie.find(seq)
@@ -293,6 +316,8 @@ class FilteringClassLoader(
         override fun iterator(): Iterator<String> {
             return set.iterator()
         }
+
+
     }
 
 }

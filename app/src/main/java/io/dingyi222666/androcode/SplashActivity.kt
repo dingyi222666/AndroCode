@@ -54,6 +54,7 @@ class SplashActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
+            MainApplication.instance.ctx.start()
             MainApplication.instance.ctx
                 .init.start(this@SplashActivity, sharedFlow)
 

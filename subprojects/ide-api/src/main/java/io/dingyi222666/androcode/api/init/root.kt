@@ -20,7 +20,10 @@ class InitService(override val ctx: Context) : Service {
 
     private var isInit = false
 
-    suspend fun start(androidContext: ComponentActivity, statusFlow: MutableSharedFlow<InitStatus>) {
+    suspend fun start(
+        androidContext: ComponentActivity,
+        statusFlow: MutableSharedFlow<InitStatus>
+    ) {
 
         if (isInit) {
             throw IllegalStateException("The init service has been initialized")
@@ -86,6 +89,7 @@ class InitService(override val ctx: Context) : Service {
             }
 
             zipFile.close()
+
         }
 
     override fun dispose() {
@@ -93,8 +97,8 @@ class InitService(override val ctx: Context) : Service {
     }
 }
 
-@AutoService(AndroCodeContext::class, "init")
-@AutoGenerateServiceExtension(AndroCodeContext::class, "init", "init")
+@AutoService(Context::class, "init")
+@AutoGenerateServiceExtension(Context::class, "init", "init")
 fun createInitService(ctx: Context): InitService {
     return ctx.root.getOrNull("init", false) ?: InitService(ctx)
 }

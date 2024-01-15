@@ -24,32 +24,32 @@ fun buildPluginConfig(block: PluginConfigBuilder.() -> Unit): PluginConfig {
 }
 
 class PluginConfigBuilder {
-    var id: String = ""
-    var displayName = id
+    var packageName: String = ""
+    var displayName = packageName
     var version = "1.0.0"
-    var apiDependencyVersion: Int = 0
+    var sdkVersion: Int = 0
     private var dependencyPlugins: List<DependencyPlugin> = emptyList()
     private var commands: List<CommandDescriptor> = emptyList()
     private var activationEvents: List<String> = emptyList()
 
     fun build(): PluginConfig {
 
-        if (id.isEmpty()) {
+        if (packageName.isEmpty()) {
             throw IllegalArgumentException("Plugin id is empty")
         }
 
         return PluginConfig(
-            id,
+            packageName,
             displayName,
             version,
-            apiDependencyVersion,
+            sdkVersion,
             dependencyPlugins,
             commands,
             activationEvents
         )
     }
 
-    fun dependencyPlugins(block: DependencyPluginBuilder.() -> Unit) {
+    fun dependencies(block: DependencyPluginBuilder.() -> Unit) {
         dependencyPlugins = DependencyPluginBuilder().apply(block).build()
     }
 
@@ -100,6 +100,14 @@ class PluginConfigBuilder {
             dependencyPlugins += DependencyPlugin(id, version)
         }
 
+        fun plugin(all: String) {
+            val ids = all.split(":")
+            if (ids.size != 2) {
+                throw IllegalArgumentException("Invalid plugin id: $all")
+            }
+            dependencyPlugins += DependencyPlugin(ids[0], ids[1])
+
+        }
 
         fun build() = dependencyPlugins
     }

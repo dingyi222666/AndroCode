@@ -62,13 +62,20 @@ open class EventEmitter(
 
     private suspend fun <E : Event> emitDefault(event: E) = withContext(Dispatchers.IO) {
         val deferredList = lock.withLock {
-            listeners[event::class].filterIsInstance<EventListener<E>>()
+            val currentEventListeners = listeners[event::class].filterIsInstance<EventListener<E>>()
                 .map {
                     async(Dispatchers.IO) {
                         it.onEvent(event)
                     }
-
                 }
+
+            val childrenEventListeners = children.map {
+                async {
+                    it.emit(event)
+                }
+            }
+
+            currentEventListeners + childrenEventListeners
         }
 
         deferredList.awaitAll()

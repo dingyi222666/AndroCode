@@ -84,5 +84,9 @@ class CombineClassLoader(classLoaders: Array<out ClassLoader>, parent: ClassLoad
         return urls
     }
 
+    fun removeClassLoader(function: (it: ClassLoader) -> Boolean) {
+        classLoaders.removeIf(function)
+    }
+
 
 }
