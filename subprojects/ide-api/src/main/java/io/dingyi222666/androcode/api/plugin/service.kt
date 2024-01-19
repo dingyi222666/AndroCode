@@ -10,6 +10,7 @@ import io.dingyi222666.androcode.api.context.Service
 import io.dingyi222666.androcode.api.coroutine
 import io.dingyi222666.androcode.api.event.event
 import io.dingyi222666.androcode.api.event.on
+import io.dingyi222666.androcode.api.init.init
 import io.dingyi222666.androcode.api.logger.LogService
 import io.dingyi222666.androcode.api.plugin.loader.ApkClassLoader
 import io.dingyi222666.androcode.api.plugin.loader.CombineClassLoader
@@ -59,7 +60,10 @@ class PluginContainer(
 
     fun loadPlugins(apkPath: String) {
         val pluginDescriptors =
-            io.dingyi222666.androcode.api.plugin.loader.loadPlugins(combineClassLoader, apkPath)
+            io.dingyi222666.androcode.api.plugin.loader.loadPlugins(
+                ctx,
+                ctx.init.androidApplication, combineClassLoader, apkPath
+            )
 
         for (pluginDescriptor in pluginDescriptors) {
             plugins[pluginDescriptor.pluginId] = pluginDescriptor
@@ -127,6 +131,8 @@ class PluginContainer(
         if (!pluginId.startsWith("system.")) {
             // system plugin always not reloadable
             plugins[pluginId] = io.dingyi222666.androcode.api.plugin.loader.loadPlugin(
+                ctx,
+                ctx.init.androidApplication,
                 pluginId,
                 combineClassLoader,
                 activatedPluginDescriptor.pluginDescriptor.pluginApkPath

@@ -1,8 +1,11 @@
 package io.dingyi222666.androcode.api.storage
 
+import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.androcode.annotation.AutoService
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
 import io.dingyi222666.androcode.api.init.init
+import io.dingyi222666.androcode.api.plugin.PluginService
 
 class StorageService(override val ctx: Context) : Service {
     override val id = "storage"
@@ -38,3 +41,10 @@ class StorageService(override val ctx: Context) : Service {
 
 }
 
+@AutoService(Context::class, "storage")
+@AutoGenerateServiceExtension(Context::class, "storage", "storage")
+fun createStorageService(ctx: Context): StorageService {
+    val parent = ctx.root.getOrNull<StorageService>("storage", false)
+
+    return parent ?: StorageService(ctx)
+}

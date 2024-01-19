@@ -99,6 +99,8 @@ interface Storage : Disposable {
     fun setString(key: String, value: String): Boolean
 
     fun remove(key: String): Boolean
+
+    fun reload()
 }
 
 fun Storage.getStringArray(key: String): Array<String> {

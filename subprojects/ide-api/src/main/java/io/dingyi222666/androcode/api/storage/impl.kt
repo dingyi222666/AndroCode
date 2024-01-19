@@ -32,21 +32,11 @@ class JSONStorage(
         path.outputStream().bufferedWriter().write(Json.encodeToString(objectMap))
     }
 
-    private fun read() {
-        if (path.exists()) {
-            val rawText = path.inputStream().bufferedReader().readText()
-
-            val json = Json.parseToJsonElement(rawText)
-
-            objectMap.clear()
-            objectMap.putAll(json.jsonObject.toMap())
-        }
-    }
 
     private fun checkLoad() {
         if (!isLoading) {
             isLoading = true
-            read()
+            reload()
             isLoading = false
         }
     }
@@ -313,7 +303,7 @@ class JSONStorage(
     }
 
     override fun remove(key: String): Boolean {
-        val value = objectMap.remove(key) ?: return false
+        objectMap.remove(key) ?: return false
 
         return kotlin.runCatching {
             write()
@@ -333,6 +323,22 @@ class JSONStorage(
         return getDoubleOrNull(key) ?: defaultValue
     }
 
+    override fun reload() {
+
+
+        if (!path.exists()) {
+            objectMap.clear()
+            return
+        }
+
+        val rawText = path.inputStream().bufferedReader().readText()
+
+        val json = Json.parseToJsonElement(rawText)
+
+
+        objectMap.putAll(json.jsonObject.toMap())
+
+    }
 
 }
 
