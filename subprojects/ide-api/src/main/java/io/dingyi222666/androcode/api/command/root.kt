@@ -3,7 +3,7 @@ package io.dingyi222666.androcode.api.command
 
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.androcode.annotation.AutoService
-import io.dingyi222666.androcode.api.common.IDisposable
+import io.dingyi222666.androcode.api.common.Disposable
 import io.dingyi222666.androcode.api.common.disposer
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
@@ -19,9 +19,9 @@ data class ICommand(
 )
 
 interface ICommandRegistry {
-    fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable
-    fun registerCommand(command: ICommand): IDisposable
-    fun registerCommandAlias(oldId: String, newId: String): IDisposable
+    fun registerCommand(id: String, command: ICommandHandler<*>): Disposable
+    fun registerCommand(command: ICommand): Disposable
+    fun registerCommandAlias(oldId: String, newId: String): Disposable
     fun getCommand(id: String): ICommand?
     fun getCommands(): Map<String, ICommand>
 }
@@ -33,11 +33,11 @@ internal class CommandRegistry(
     private val commands = mutableMapOf<String, ICommand>()
 
 
-    override fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable {
+    override fun registerCommand(id: String, command: ICommandHandler<*>): Disposable {
         return registerCommand(ICommand(id, command))
     }
 
-    override fun registerCommand(command: ICommand): IDisposable {
+    override fun registerCommand(command: ICommand): Disposable {
 
         val (id) = command
 
@@ -47,19 +47,19 @@ internal class CommandRegistry(
 
         commands[id] = command
 
-        val disposable = IDisposable {
+        val disposable = Disposable {
             commands.remove(id)
         }
 
         ctx.disposer.register(disposable, ctx)
 
-        return IDisposable {
+        return Disposable {
             disposable.dispose()
             ctx.disposer.markAsDisposed(disposable)
         }
     }
 
-    override fun registerCommandAlias(oldId: String, newId: String): IDisposable {
+    override fun registerCommandAlias(oldId: String, newId: String): Disposable {
         val command = commands[oldId] ?: error("Command with id $oldId does not exist")
         return registerCommand(newId) {
             command.handler.execute(*it)
@@ -88,22 +88,22 @@ abstract class ICommandService : Service {
 
     internal abstract val descriptionList: MutableList<CommandDescriptor>
 
-    fun registerCommand(id: String, command: ICommandHandler<*>): IDisposable =
+    fun registerCommand(id: String, command: ICommandHandler<*>): Disposable =
         commandRegistry.registerCommand(id, command)
 
-    fun registerCommandAlias(oldId: String, newId: String): IDisposable =
+    fun registerCommandAlias(oldId: String, newId: String): Disposable =
         commandRegistry.registerCommandAlias(oldId, newId)
 
-    fun registerCommandDescription(id: String, title: String, description: String): IDisposable {
+    fun registerCommandDescription(id: String, title: String, description: String): Disposable {
         descriptionList.add(CommandDescriptor(id, title, description))
 
-        val disposable = IDisposable {
+        val disposable = Disposable {
             descriptionList.remove(CommandDescriptor(id, title, description))
         }
 
         ctx.disposer.register(disposable, ctx)
 
-        return IDisposable {
+        return Disposable {
             disposable.dispose()
             ctx.disposer.markAsDisposed(disposable)
         }

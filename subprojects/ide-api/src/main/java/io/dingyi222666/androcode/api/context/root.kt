@@ -1,18 +1,17 @@
 package io.dingyi222666.androcode.api.context
 
 import androidx.annotation.CallSuper
-import io.dingyi222666.androcode.api.common.IDisposable
+import io.dingyi222666.androcode.api.common.Disposable
 import io.dingyi222666.androcode.api.common.disposer
 import io.dingyi222666.androcode.api.coroutine
 import io.dingyi222666.androcode.api.event.Event
-import io.dingyi222666.androcode.api.event.EventService
 import io.dingyi222666.androcode.api.event.event
 
 
 open class Context(
     open val id: String,
     val parent: Context? = null
-) : IDisposable {
+) : Disposable {
 
     private val globalServices: MutableMap<String, Service> = mutableMapOf()
 
@@ -46,12 +45,12 @@ open class Context(
         }
     }
 
-    fun register(service: Service, id: String = service.id): IDisposable {
+    fun register(service: Service, id: String = service.id): Disposable {
         globalServices[id] = service
 
         disposer.register(service, this)
 
-        return IDisposable {
+        return Disposable {
             removeInstance(id)
             service.dispose()
         }
@@ -60,10 +59,10 @@ open class Context(
     fun registerConstructor(
         id: String,
         constructor: ContextConstructor
-    ): IDisposable {
+    ): Disposable {
         constructors[id] = constructor
 
-        return IDisposable {
+        return Disposable {
             removeConstructor(id)
             removeInstance(id)
         }
@@ -167,7 +166,7 @@ inline fun <reified T : Service> Context.getAs(id: String): T {
     throw IllegalStateException("Service $id is not of type ${T::class.java}")
 }
 
-interface Service : IDisposable {
+interface Service : Disposable {
     val id: String
 
     val ctx: Context

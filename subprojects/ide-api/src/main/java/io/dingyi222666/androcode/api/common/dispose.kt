@@ -6,20 +6,20 @@ import io.dingyi222666.androcode.annotation.AutoService
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.Service
 
-fun interface IDisposable {
+fun interface Disposable {
     fun dispose()
 }
 
 
 class Disposer(
     override val ctx: Context
-) : Service, IDisposable {
+) : Service, Disposable {
 
     override val id = "disposer"
 
-    private val objectTree = HashMultimap.create<IDisposable, IDisposable>()
+    private val objectTree = HashMultimap.create<Disposable, Disposable>()
 
-    fun register(child: IDisposable, parent: IDisposable) {
+    fun register(child: Disposable, parent: Disposable) {
         objectTree.put(parent, child)
     }
 
@@ -31,9 +31,9 @@ class Disposer(
         }
     }
 
-    fun disposeChild(parent: IDisposable) {
-        val disposableList = mutableListOf<IDisposable>()
-        val disposableStack = ArrayDeque<IDisposable>()
+    fun disposeChild(parent: Disposable) {
+        val disposableList = mutableListOf<Disposable>()
+        val disposableStack = ArrayDeque<Disposable>()
 
         disposableStack.add(parent)
 
@@ -57,7 +57,7 @@ class Disposer(
         }
     }
 
-    fun markAsDisposed(disposable: IDisposable) {
+    fun markAsDisposed(disposable: Disposable) {
         // search disposable
 
         // keys
@@ -81,9 +81,9 @@ class Disposer(
     }
 }
 
-class DisposableStore : IDisposable {
-    private val disposables = ArrayList<IDisposable>()
-    fun add(disposable: IDisposable) {
+class DisposableStore : Disposable {
+    private val disposables = ArrayList<Disposable>()
+    fun add(disposable: Disposable) {
         disposables.add(disposable)
     }
 
@@ -100,7 +100,7 @@ class DisposableStore : IDisposable {
 
     fun size() = disposables.size
 
-    fun remove(disposable: IDisposable) {
+    fun remove(disposable: Disposable) {
         disposables.remove(disposable)
     }
 }

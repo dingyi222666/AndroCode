@@ -1,5 +1,7 @@
 package io.dingyi222666.androcode.api.plugin
 
+import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
+import io.dingyi222666.androcode.annotation.AutoService
 import io.dingyi222666.androcode.api.configureBase
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.context.ContextLifecycleEvent
@@ -8,6 +10,7 @@ import io.dingyi222666.androcode.api.context.Service
 import io.dingyi222666.androcode.api.coroutine
 import io.dingyi222666.androcode.api.event.event
 import io.dingyi222666.androcode.api.event.on
+import io.dingyi222666.androcode.api.logger.LogService
 import io.dingyi222666.androcode.api.plugin.loader.ApkClassLoader
 import io.dingyi222666.androcode.api.plugin.loader.CombineClassLoader
 import io.dingyi222666.androcode.api.plugin.loader.FilteringClassLoader
@@ -31,6 +34,7 @@ class PluginService(
             return
         }
 
+        container.loadSystemPlugins()
 
     }
 
@@ -158,3 +162,11 @@ data class ActivatedPluginDescriptor(
     val pluginDescriptor: PluginDescriptor,
     val pluginContext: Context
 )
+
+@AutoService(Context::class, "plugin")
+@AutoGenerateServiceExtension(Context::class, "plugin", "plugin")
+fun createPluginService(ctx: Context): PluginService {
+    val parent = ctx.root.getOrNull<PluginService>("plugin", false)
+
+    return parent ?: PluginService(ctx)
+}

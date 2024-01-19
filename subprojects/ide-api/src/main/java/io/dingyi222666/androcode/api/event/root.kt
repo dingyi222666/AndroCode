@@ -1,7 +1,7 @@
 package io.dingyi222666.androcode.api.event
 
 import com.google.common.collect.HashMultimap
-import io.dingyi222666.androcode.api.common.IDisposable
+import io.dingyi222666.androcode.api.common.Disposable
 import io.dingyi222666.androcode.api.context.Context
 import io.dingyi222666.androcode.api.coroutine
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ fun interface EventListener<E : Event> {
 open class EventEmitter(
     private val parent: EventEmitter? = null,
     private val ctx: Context,
-) : IDisposable {
+) : Disposable {
 
     private val root: EventEmitter = parent?.root ?: this
 
@@ -88,12 +88,12 @@ open class EventEmitter(
         }
     }
 
-    suspend fun <E : Event> on(clazz: KClass<E>, listener: EventListener<E>): IDisposable {
+    suspend fun <E : Event> on(clazz: KClass<E>, listener: EventListener<E>): Disposable {
         lock.withLock {
             listeners.put(clazz, listener)
         }
 
-        return IDisposable {
+        return Disposable {
             ctx.root.coroutine.launchOnMain {
                 off(clazz, listener)
             }
@@ -114,7 +114,7 @@ enum class EventDirection {
 
 suspend inline fun <reified E : Event> EventEmitter.on(
     listener: EventListener<E>,
-): IDisposable {
+): Disposable {
     return on(E::class, listener)
 }
 

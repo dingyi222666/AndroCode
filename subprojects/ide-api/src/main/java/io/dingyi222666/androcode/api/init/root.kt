@@ -1,6 +1,7 @@
 package io.dingyi222666.androcode.api.init
 
 
+import android.app.Application
 import androidx.activity.ComponentActivity
 import io.dingyi222666.androcode.annotation.AutoGenerateServiceExtension
 import io.dingyi222666.androcode.annotation.AutoService
@@ -17,17 +18,26 @@ class InitService(override val ctx: Context) : Service {
     override val id = "init"
 
     lateinit var appWorkDirectory: File
+        private set
+    lateinit var storageDirectory: File
+        private set
+    lateinit var cacheDirectory: File
+        private set
+    lateinit var androidApplication: Application
+        private set
 
     private var isInit = false
 
     suspend fun start(
-        androidContext: ComponentActivity,
+        androidApplication: Application,
         statusFlow: MutableSharedFlow<InitStatus>
     ) {
 
         if (isInit) {
             throw IllegalStateException("The init service has been initialized")
         }
+
+        this.androidApplication = androidApplication
 
         // unzip apk files
         statusFlow.emit(
@@ -36,14 +46,14 @@ class InitService(override val ctx: Context) : Service {
             )
         )
 
-        unzipApkFiles(androidContext, statusFlow)
+        unzipApkFiles(androidApplication, statusFlow)
 
 
         // TODO: load plugin
     }
 
     private suspend fun unzipApkFiles(
-        androidContext: ComponentActivity,
+        androidContext: Application,
         statusFlow: MutableSharedFlow<InitStatus>
     ) =
         withContext(Dispatchers.IO) {
@@ -51,6 +61,8 @@ class InitService(override val ctx: Context) : Service {
                 ?: throw IllegalStateException("The external files directory is null")
 
             appWorkDirectory = targetPath
+            storageDirectory = targetPath.resolve("storage").apply { mkdirs() }
+            cacheDirectory = targetPath.resolve("cache").apply { mkdirs() }
 
 
             val currentApkPath = androidContext.packageResourcePath
